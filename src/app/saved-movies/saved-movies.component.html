@@ -1,0 +1,33 @@
+<app-navbar></app-navbar>
+  <div class="container-fluid px-5 py-5">
+  <div class="row" *ngIf="activeUser; else spinner">
+  <div class="col-4" *ngFor="let item of activeUser?.savedMovies">
+    <div class="movie_card h-100">
+      <div class="info_section">
+        <div class="movie_header">
+          <img class="locandina" src='{{item.photo}}' />
+          <div>
+            <h1>{{item.name}}</h1>
+            <h4>{{item.year}} | {{item.runTime}} min</h4>
+            <span>{{item.category}}</span>
+          </div>
+        </div>
+        <div class="movie_desc">
+          <p class="text">
+            {{item.description | slice: 0 : 100}}...
+          </p>
+        </div>
+        <div class="movie_social">
+          <ul >
+            <li><i class="material-icons" style="font-size:x-large;" (click)="remove(item)">delete</i></li>
+            <li><i class="material-icons" style="font-size:x-large;" [routerLink]="['/details', item.id]">more_vert</i></li>
+          </ul>
+        </div>
+      </div>
+      <div class="blur_back" style="background: url('{{item.photo}}'); background-size: cover;"></div>
+    </div>
+</div>
+  </div>
+</div>
+<ng-template #spinner><div class="loader"></div></ng-template>
+

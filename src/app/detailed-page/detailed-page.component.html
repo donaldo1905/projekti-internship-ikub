@@ -1,0 +1,72 @@
+<app-navbar></app-navbar>
+<br>
+<div class="container">
+    <div class="row">
+        <div class="col-4">
+            <img [src]="item?.photo" style="height: 83vh; width: 90%;">
+        </div>
+        <div class="col-8">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-5 text-center">
+                        <h1><b>{{item?.name}}</b></h1>
+                        <br>
+                        <h3><b>Director: </b>{{item?.director}}</h3>
+                        <h3><b>Release Year: </b>{{item?.year}}</h3>
+                        <h3><b>Runtime: </b>{{item?.runTime}}</h3>
+                        <h3><b>Categories: </b>{{item?.category}}</h3>
+                        <h3><b>Average Rating: </b>{{averageRating | number}}</h3>
+                        <h3>
+                            <fieldset class="rating">
+                                <input type="radio" id="star10" value=10 name="rating" [formControl]="ten"
+                                    (click)="ratingMethod(ten)" [checked]="currentRating === 10" /><label class="full"
+                                    for="star10"></label>
+                                <input type="radio" id="star9" value=9 name="rating" [formControl]="nine"
+                                    (click)="ratingMethod(nine)" [checked]="currentRating === 9" /><label class="full"
+                                    for="star9"></label>
+                                <input type="radio" id="star8" value=8 name="rating" [formControl]="eight"
+                                    (click)="ratingMethod(eight)" [checked]="currentRating === 8" /><label class="full"
+                                    for="star8"></label>
+                                <input type="radio" id="star7" value=7 name="rating" [formControl]="seven"
+                                    (click)="ratingMethod(seven)" [checked]="currentRating === 7" /><label class="full"
+                                    for="star7"></label>
+                                <input type="radio" id="star6" value=6 name="rating" [formControl]="six"
+                                    (click)="ratingMethod(six)" [checked]="currentRating === 6" /><label class="full"
+                                    for="star6"></label>
+                                <input type="radio" id="star5" value=5 name="rating" [formControl]="five"
+                                    (click)="ratingMethod(five)" [checked]="currentRating === 5" /><label class="full"
+                                    for="star5"></label>
+                                <input type="radio" id="star4" value=4 name="rating" [formControl]="four"
+                                    (click)="ratingMethod(four)" [checked]="currentRating === 4" /><label class="full"
+                                    for="star4"></label>
+                                <input type="radio" id="star3" value=3 name="rating" [formControl]="three"
+                                    (click)="ratingMethod(three)" [checked]="currentRating === 3" /><label class="full"
+                                    for="star3"></label>
+                                <input type="radio" id="star2" value=2 name="rating" [formControl]="two"
+                                    (click)="ratingMethod(two)" [checked]="currentRating === 2" /><label class="full"
+                                    for="star2"></label>
+                                <input type="radio" id="star1" value=1 name="rating" [formControl]="one"
+                                    (click)="ratingMethod(one)" [checked]="currentRating === 1" /><label class="full"
+                                    for="star1"></label>
+                            </fieldset>
+                        </h3>
+                    </div>
+                    <div class="col-7"><iframe width="420" height="315" [src]="trailer! | safe" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+                </div>
+            </div>
+            <br>
+            <p class="description">{{item?.description}}</p>
+            <mat-form-field appearance="outline">
+                <mat-label>Add a comment</mat-label>
+                <textarea matInput [formControl]="commentForm"></textarea> 
+                <button mat-raised-button color="primary" mat-button (click)="addComment()" [disabled]="!commentForm.valid">Add</button>
+            </mat-form-field>
+            <div *ngFor="let comment of item?.comments;" class="comments">
+                <h3><b>{{comment.name}}</b></h3>
+                <p>{{comment.comment}}</p>
+                <i class="material-icons" style="font-size:x-large; cursor: pointer;" (click)="deleteComment(comment)" *ngIf="comment?.name === activeUser?.firstName">delete</i>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
