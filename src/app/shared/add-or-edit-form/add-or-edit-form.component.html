@@ -21,11 +21,12 @@
             <mat-label>RunTime</mat-label>
             <input matInput type="number" formControlName="runtime">
           </mat-form-field></div>
-          <mat-form-field appearance="fill">
+          <div class="photoInput">
+          <mat-form-field appearance="fill" style="width: 75%;">
             <mat-label>Photo</mat-label>
             <input matInput formControlName="photo">
           </mat-form-field>
-          <input type="file" name="file" accept="image/*" formControlName="file" (change)="getValue($event)">
+          <input type="file" name="file" accept="image/*" formControlName="file" (change)="getValue($event)" (resize)="500"></div>
           <mat-form-field appearance="fill">
             <mat-label>Trailer</mat-label>
             <input matInput formControlName="trailer">

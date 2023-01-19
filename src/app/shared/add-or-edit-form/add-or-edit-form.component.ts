@@ -117,7 +117,7 @@ export class AddOrEditFormComponent implements OnInit {
     reader.readAsDataURL(event.target.files[0])
     reader.onloadend = () => {
       this.fileValue = reader.result as string
-      this.addoredit.get('photo')?.setValue(this.fileValue.slice(0,15))
+      this.addoredit.get('photo')?.setValue(reader.result)
     }
     }
 }

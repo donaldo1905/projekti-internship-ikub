@@ -13,7 +13,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class HomeComponent implements OnInit {
   items: ItemModel[] = []
-  searchForm: FormControl = new FormControl()
+  searchForm: FormControl = new FormControl('')
   categories: FormControl = new FormControl()
   startYear: FormControl = new FormControl(1970)
   endYear: FormControl = new FormControl(2022)
@@ -71,7 +71,7 @@ export class HomeComponent implements OnInit {
       return this.filteredMovies.
         pipe(map(movies => {
           return movies.filter(movies =>
-            movies.year >= searchValue
+            movies.year >= searchValue && movies.name.toLowerCase().includes(this.searchForm.value)
           )
         }))
 
