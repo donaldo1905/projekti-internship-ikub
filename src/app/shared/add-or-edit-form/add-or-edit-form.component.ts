@@ -116,8 +116,18 @@ export class AddOrEditFormComponent implements OnInit {
     let reader = new FileReader()
     reader.readAsDataURL(event.target.files[0])
     reader.onloadend = () => {
-      this.fileValue = reader.result as string
-      this.addoredit.get('photo')?.setValue(reader.result)
+      let img = new Image();
+      img.src = reader.result as string;
+    let canvas = document.createElement('canvas')
+      canvas.width = 320;
+      canvas.height = 480;
+      let ctx = canvas.getContext('2d');
+      img.onload = () => {
+      ctx!.drawImage(img, 0, 0, 320, 480);
+      console.log(ctx!.canvas.toDataURL().length) 
+      this.addoredit.get('photo')?.setValue(ctx!.canvas.toDataURL())
+      this.fileValue = ctx!.canvas.toDataURL()
+    }
     }
     }
 }

@@ -11,14 +11,12 @@ import { User } from '../interfaces/interfaces';
 })
 export class AuthService {
 
-  loggedUser = new BehaviorSubject<any>(null)
   constructor(private fireAuth: AngularFireAuth, private router: Router, private fireStore: AngularFirestore, private toastr: ToastrService) {}
 
   login(email: string, password: string){
    this.fireAuth.signInWithEmailAndPassword(email,password).then( (res) => {
     localStorage.setItem('id', res.user?.uid!)
-    res.user?.getIdToken().then( token => {
-      this.loggedUser.next(token)
+    res.user?.getIdToken().then(token => {
       localStorage.setItem('token', token)})
       this.router.navigate(['/home'])
    },err => {
