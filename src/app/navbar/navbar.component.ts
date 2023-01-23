@@ -15,8 +15,11 @@ export class NavbarComponent implements OnInit {
   }
 
   getAvtiveUser(){
-    this.authService.getUser(localStorage.getItem('id')!).get().subscribe(user => {
-      this.activeUser = user.data()})}
+    this.authService.getId().subscribe(user => {
+      this.authService.getUser(user!.uid).get().subscribe(user => {
+        this.activeUser = user.data()
+      })
+    })}
       logout(): void {
         this.authService.signOut()
       }

@@ -17,7 +17,11 @@ constructor(private authService: AuthService, private toastr: ToastrService){}
   }
 
   getActiveUser(){
-    this.authService.getUser(localStorage.getItem('id')!).get().subscribe(user => this.activeUser = user.data())
+    this.authService.getId().subscribe(user => {
+      this.authService.getUser(user!.uid).get().subscribe(user => {
+        this.activeUser = user.data()
+      })
+    })
   }
 
   remove(item: ItemModel){

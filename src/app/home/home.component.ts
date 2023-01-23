@@ -32,11 +32,13 @@ export class HomeComponent implements OnInit {
   }
 
   getAvtiveUser(){
-    this.authService.getUser(localStorage.getItem('id')!).get().subscribe(user => {
-      this.activeUser = user.data()
-      for(let movie of this.activeUser.savedMovies){
-        this.savedMovies.push(movie.id)   
-      }
+    this.authService.getId().subscribe(user => {
+      this.authService.getUser(user!.uid).get().subscribe(user => {
+        this.activeUser = user.data()
+        for(let movie of this.activeUser.savedMovies){
+          this.savedMovies.push(movie.id)   
+        }
+      })
     })
   }
 

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../authentication/auth.service';
 import { ItemModel } from '../interfaces/interfaces';
@@ -27,17 +28,25 @@ seven = new FormControl(7)
 eight = new FormControl(8)
 nine = new FormControl(9)
 ten = new FormControl(10)
+fileUrl: any;
 commentForm = new FormControl('', Validators.required)
 
-constructor(private itemsService: ItemsService, private route: ActivatedRoute, private authService: AuthService, private router: Router){}
+constructor(private itemsService: ItemsService, private route: ActivatedRoute, private authService: AuthService, private router: Router, private sanitizer: DomSanitizer){}
   ngOnInit(): void { 
     this.getItem()
     this.getActiveUser()
+    const data = 'some text';
+    const blob = new Blob([data], { type: 'application/octet-stream' });
+    this.fileUrl = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
     window.scrollTo(0, 0)
   }
 
   getActiveUser(){
-    this.authService.getUser(localStorage.getItem('id')!).get().subscribe(user => this.activeUser = user.data())
+    this.authService.getId().subscribe(user => {
+      this.authService.getUser(user!.uid).get().subscribe(user => {
+        this.activeUser = user.data()
+      })
+    })
   }
 
   getItem(){

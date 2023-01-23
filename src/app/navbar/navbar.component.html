@@ -6,7 +6,7 @@
     </div>
     <div class="logo-align">
       <button color="primary" mat-button routerLink="/admin" *ngIf="activeUser?.role === 'admin'"><i class="material-icons nav-icons">admin_panel_settings</i></button>
-      <button color="primary" mat-button routerLink="/savedmovies"><i class="material-icons nav-icons">save</i></button>
+      <button color="primary" mat-button routerLink="/savedmovies"><i class="material-icons nav-icons">person</i></button>
       <h2 style="margin:0">Welcome, {{activeUser?.firstName}}</h2>
       <button color="warn" mat-button (click)="logout()"><i class="material-icons px-4 nav-icons">exit_to_app</i></button>
     </div>

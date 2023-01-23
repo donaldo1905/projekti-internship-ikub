@@ -3,19 +3,18 @@ import { AngularFireAuth } from '@angular/fire/compat/auth'
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore'
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { BehaviorSubject } from 'rxjs'
 import { User } from '../interfaces/interfaces';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-
+  usersId!: string;
   constructor(private fireAuth: AngularFireAuth, private router: Router, private fireStore: AngularFirestore, private toastr: ToastrService) {}
 
   login(email: string, password: string){
    this.fireAuth.signInWithEmailAndPassword(email,password).then( (res) => {
-    localStorage.setItem('id', res.user?.uid!)
+    localStorage.setItem('id', 'user logged in')
     res.user?.getIdToken().then(token => {
       localStorage.setItem('token', token)})
       this.router.navigate(['/home'])
@@ -45,6 +44,10 @@ export class AuthService {
         uid: user.uid    
       }
       return newUser.set(userData, {merge: true})
+  }
+
+  getId(){
+   return this.fireAuth.authState
   }
 
   update(user: User){

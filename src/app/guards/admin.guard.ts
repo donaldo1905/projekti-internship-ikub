@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from '../authentication/auth.service';
+import { User } from '../interfaces/interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -15,14 +16,15 @@ export class AdminGuardGuard implements CanActivate {
         this.router.navigate(['/login'])
         return false
       }else
-      this.auth.getUser(localStorage.getItem('id')!).get().subscribe( (res: any) => {
-        if(res.data().role === 'admin'){
+      this.auth.getId().subscribe(user => {
+        this.auth.getUser(user!.uid).get().subscribe((res: any) => {
+          if(res.data().role === 'admin'){
           return true
         }else
         this.router.navigate(['/home'])
         return false
-      }
-      )
+        })
+      })
       return true
   }
 }
