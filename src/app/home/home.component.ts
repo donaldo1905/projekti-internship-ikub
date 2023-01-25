@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Form, FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, map, Observable, of, startWith, switchMap } from 'rxjs';
-import { ItemsService } from '../services/items.service';
-import { AuthService } from '../authentication/auth.service';
-import { ItemModel } from '../interfaces/interfaces';
+import { ItemsService } from '../core/services/items.service';
+import { AuthService } from '../core/authentication/auth.service';
+import { ItemModel } from '../core/interfaces/interfaces';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -106,17 +106,21 @@ export class HomeComponent implements OnInit {
   finalFilter: Observable<ItemModel[]> = this.categories?.valueChanges.pipe(distinctUntilChanged(), startWith(''), debounceTime(200),
     switchMap(searchValue => {
       if (searchValue) {
+        console.log(searchValue);
         return this.filteredByEndTime.
           pipe(map(movies => {
+            if(this.categories.dirty){
             return movies.filter(movies => movies.category.includes(searchValue) && movies.runTime <= this.endTime.value && movies.runTime >= this.startTime?.value && movies.year <= this.endYear.value && movies.year >= this.startYear?.value)
-          }))
+          }return this.items}))
       }
+      
       return this.filteredByEndTime.pipe(map(movies => { return movies }))
+      
     }))
 
   addToSavedList(item: ItemModel) {
       if (!this.activeUser?.savedMovies) {
-        this.authService.getUser(localStorage.getItem('id')!).update({ savedMovies: [item] })
+        this.authService.getUser(this.activeUser.uid).update({ savedMovies: [item] })
         this.toastr.success(`${item.name} was added to your save list!`, 'Success', {positionClass: 'toast-top-center'})
       }
       else {
@@ -128,7 +132,7 @@ export class HomeComponent implements OnInit {
         }
         if (!check) {
           this.activeUser.savedMovies.push(item)
-          this.authService.getUser(localStorage.getItem('id')!).update({ savedMovies: this.activeUser!.savedMovies })
+          this.authService.getUser(this.activeUser.uid).update({ savedMovies: this.activeUser!.savedMovies })
           this.toastr.success(`${item.name} was added to your save list!`, 'Success', {positionClass: 'toast-top-center'})
         }
 
@@ -140,7 +144,7 @@ export class HomeComponent implements OnInit {
        for(let i = 0; i< this.activeUser.savedMovies.length; i++){
         if(this.activeUser.savedMovies[i].id === item.id){
           this.activeUser.savedMovies.splice(i, 1)
-          this.authService.getUser(localStorage.getItem('id')!).update({ savedMovies: this.activeUser.savedMovies })
+          this.authService.getUser(this.activeUser.uid).update({ savedMovies: this.activeUser.savedMovies })
           this.savedMovies.splice(i,1)
           this.toastr.error(`${item.name} was removed from your save list!`, 'Movie Removed', {positionClass: 'toast-top-center'})
         }

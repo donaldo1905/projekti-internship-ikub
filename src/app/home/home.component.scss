@@ -169,7 +169,8 @@ mat-form-field{
 .movie_card_slider{
   position: relative;
   display: block;
-  width: 800px;
+  max-width: 800px;
+  min-width: 400px;
   z-index: -1;
   height: 350px;
   margin: 80px auto; 
@@ -276,7 +277,7 @@ mat-slider{
 
 .filter{
   padding: 75px 0;
-  width: 25%;
+  width: 300px;
 }
 
 ::ng-deep .cdk-overlay-container{
@@ -302,4 +303,36 @@ mat-form-field{
 }
 .block{
   display: block;
+}
+
+.carousel{
+  max-width: 800px;
+  min-width: 400px;
+  padding-right: 10px;
+}
+
+@media screen and (max-width: 767px) {
+  .flex-display{
+    display: block;
+
+  }
+  .filter{
+    padding: 0;
+    width: 300px;
+    margin: 0 auto;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .movie_desc_slider{
+    display: none;}
+    .movie_card_slider{
+    .info_section_slider{
+  .movie_header_slider{
+  .locandina_slider{
+    position: relative;
+       float: none;
+        margin: 20px;
+        height: 120px;
+  }}}}
 }

@@ -1,7 +1,10 @@
-<app-navbar></app-navbar>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-9">
   <div class="container-fluid px-5 py-5">
   <div class="row" *ngIf="activeUser; else spinner">
-  <div class="col-4" *ngFor="let item of activeUser?.savedMovies">
+  <div class="col-6" *ngFor="let item of activeUser?.savedMovies">
     <div class="movie_card h-100">
       <div class="info_section">
         <div class="movie_header">
@@ -28,6 +31,7 @@
     </div>
 </div>
   </div>
-</div>
+</div></div>
+<div class="col-3">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ab fuga dolore, accusamus repellendus perspiciatis delectus nam, voluptatem, expedita atque tempora eos error vel deserunt. Alias doloremque nesciunt eum illo odio.</div></div></div>
 <ng-template #spinner><div class="loader"></div></ng-template>
 

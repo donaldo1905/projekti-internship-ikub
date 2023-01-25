@@ -42,9 +42,10 @@
             </mat-select>
           </mat-form-field>
           <div class="modal-footer">
-            <button type="submit" class="btn btn-primary" *ngIf="id === 'add'" (click)="addNewItem()" [disabled]="!addoredit.valid">Add Item</button>
-            <button type="submit" class="btn btn-primary" *ngIf="id !== 'add'" (click)="editItem()" [disabled]="!addoredit.valid">Save changes</button>
-            <button type="button" class="btn btn-secondary" routerLink="/admin">Close</button>
+            <button type="submit" class="btn btn-primary" *ngIf="add" (click)="addNewItem()" [disabled]="!addoredit.valid">Add Item</button>
+            <button type="submit" class="btn btn-primary" *ngIf="item?.id && !add" (click)="editItem()" [disabled]="!addoredit.valid">Save changes</button>
+            <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
           </div>
         </form>
     </div></div>
+   

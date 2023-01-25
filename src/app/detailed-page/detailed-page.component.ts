@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '../authentication/auth.service';
-import { ItemModel } from '../interfaces/interfaces';
-import { ItemsService } from '../services/items.service';
+import { AuthService } from '../core/authentication/auth.service';
+import { ItemModel } from '../core/interfaces/interfaces';
+import { ItemsService } from '../core/services/items.service';
 
 @Component({
   selector: 'app-detailed-page',
@@ -33,11 +33,7 @@ commentForm = new FormControl('', Validators.required)
 
 constructor(private itemsService: ItemsService, private route: ActivatedRoute, private authService: AuthService, private router: Router, private sanitizer: DomSanitizer){}
   ngOnInit(): void { 
-    this.getItem()
     this.getActiveUser()
-    const data = 'some text';
-    const blob = new Blob([data], { type: 'application/octet-stream' });
-    this.fileUrl = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
     window.scrollTo(0, 0)
   }
 
@@ -45,12 +41,7 @@ constructor(private itemsService: ItemsService, private route: ActivatedRoute, p
     this.authService.getId().subscribe(user => {
       this.authService.getUser(user!.uid).get().subscribe(user => {
         this.activeUser = user.data()
-      })
-    })
-  }
-
-  getItem(){
-    this.itemsService.getItem(this.route.snapshot.params['id']).subscribe(item => 
+           this.itemsService.getItem(this.route.snapshot.params['id']).subscribe(item => 
       { 
         if(item){
         this.trailer = item.trailer.slice(0, 24) + 'embed/' +item.trailer.slice(32) + '?autoplay=1'
@@ -60,13 +51,15 @@ constructor(private itemsService: ItemsService, private route: ActivatedRoute, p
         } 
         this.averageRating = this.sum/this.item.rating!.length
         for(let i=0; i<this.item.rating!.length; i++){
-          if(this.item.rating![i].id === localStorage.getItem('id')){ 
+          if(this.item.rating![i].id === this.activeUser?.uid){ 
             this.currentRating = this.item.rating![i].rating
           }
     }}
   else {
     this.router.navigate(['/not-found'])
-  }})
+  }}) 
+      })
+    })
   }
   
   logout(): void {
@@ -78,23 +71,26 @@ constructor(private itemsService: ItemsService, private route: ActivatedRoute, p
     this.sum = 0
  if(this.item?.rating){
   for(let i=0; i<this.item.rating.length; i++){
-    if(this.item.rating[i].id === localStorage.getItem('id')){ 
-      this.item.rating[i] = {id: localStorage.getItem('id')!, rating: +name.value}
+    if(this.item.rating[i].id === this.activeUser?.uid){ 
+      this.item.rating[i] = {id: this.activeUser?.uid, rating: +name.value}
       this.itemsService.rateItem(this.route.snapshot.params['id'], this.item!.rating).subscribe()
       replace = true
+      console.log(this.activeUser.uid)
     }
     this.sum = this.sum + this.item!.rating[i].rating
     this.averageRating = this.sum/this.item.rating.length
     }
     
     if(!replace){
-      this.item.rating.push({id: localStorage.getItem('id')!, rating: +name.value})
+      this.item.rating.push({id: this.activeUser?.uid, rating: +name.value})
       this.itemsService.rateItem(this.route.snapshot.params['id'], this.item.rating).subscribe()
       this.averageRating = this.averageRating/2 + +name.value/2
+      console.log(this.activeUser.uid)
     }
   }else {
-      this.itemsService.rateItem(this.route.snapshot.params['id'], [{id: localStorage.getItem('id')!, rating: +name.value}]).subscribe()
+      this.itemsService.rateItem(this.route.snapshot.params['id'], [{id: this.activeUser?.uid, rating: +name.value}]).subscribe()
       this.averageRating = +name.value
+      console.log(this.activeUser.uid)
   }
  
   }

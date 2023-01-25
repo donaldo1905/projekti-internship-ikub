@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, SelectControlValueAccessor, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { map } from 'rxjs';
-import { AuthService} from 'src/app/authentication/auth.service';
-import { ItemModel } from 'src/app/interfaces/interfaces';
-import { ItemsService } from 'src/app/services/items.service';
+import { AuthService} from 'src/app/core/authentication/auth.service';
+import { ItemModel } from 'src/app/core/interfaces/interfaces';
+import { ItemsService } from 'src/app/core/services/items.service';
 
 @Component({
   selector: 'app-add-or-edit-form',
@@ -15,9 +15,11 @@ import { ItemsService } from 'src/app/services/items.service';
 export class AddOrEditFormComponent implements OnInit {
   toppingList: string[] = ['Action', 'Comedy', 'Drama', 'Crime', 'Fantasy', 'Adventure', 'Sci-Fi', 'Horror', 'Thriller', 'Historic', 'Epic'];
   addoredit: FormGroup = new FormGroup({})
-  id = this.route.snapshot.params['id']
-  activeItem!: ItemModel
   fileValue!: string;
+  @Input() add!: boolean;
+  @Output() sendAdd:EventEmitter<boolean> = new EventEmitter()
+  @Input() item?: ItemModel;
+  @Output() onClose: EventEmitter<boolean> = new EventEmitter();
   constructor(private itemsService: ItemsService, private route: ActivatedRoute, private router: Router, private authService: AuthService, private toastr: ToastrService){}
   ngOnInit(): void {
  this.setForm()
@@ -35,9 +37,9 @@ export class AddOrEditFormComponent implements OnInit {
       'description': new FormControl(null, Validators.required),
       'categories': new FormControl(null, Validators.required)
     })
-    if(this.route.snapshot.params['id'] !== 'add'){
-      this.itemsService.getItem(this.route.snapshot.params['id']).subscribe( res => {
-        this.activeItem = res
+    
+    if(this.item?.id && !this.add){
+      this.itemsService.getItem(this.item!.id!).subscribe( res => {
         this.addoredit.get('name')?.setValue(res.name)
         this.addoredit.get('director')?.setValue(res.director)
         this.addoredit.get('year')?.setValue(res.year)
@@ -58,7 +60,7 @@ export class AddOrEditFormComponent implements OnInit {
       description: this.addoredit.get('description')?.value, 
       director: this.addoredit.get('director')?.value, 
       photo: this.addoredit.get('photo')?.value, 
-      id: this.route.snapshot.params['id'],
+      id: this.item!.id,
       trailer: this.addoredit.get('trailer')?.value,
       category: this.addoredit.get('categories')?.value,
       year: this.addoredit.get('year')?.value
@@ -73,18 +75,17 @@ export class AddOrEditFormComponent implements OnInit {
         for(let user of res){ 
           console.log(user.uid)
           for(let i=0; i<user.savedMovies?.length; i++){
-            if(user.savedMovies[i].id === this.route.snapshot.params['id']){
-              console.log(user.savedMovies[i].id === this.route.snapshot.params['id'])
+            if(user.savedMovies[i].id === this.item!.id){
               user.savedMovies[i] = edittedMovie
               this.authService.getUser(user.uid).update({ savedMovies: user.savedMovies })
             }
           }
         }
     })
-    this.itemsService.editItem(this.route.snapshot.params['id'], edittedMovie).subscribe()
-    this.toastr.info(`Movie with id:${this.route.snapshot.params['id']} was edited.`, 'Success', {positionClass: 'toast-top-center'})
+    this.itemsService.editItem(this.item!.id!, edittedMovie).subscribe()
+    this.toastr.info(`Movie with id:${this.item!.id} was edited.`, 'Success', {positionClass: 'toast-top-center'})
     this.itemsService.itemToAdd.next(edittedMovie)
-    this.router.navigate(['/admin'])
+    this.closeModal()
   }
 
   addNewItem(){
@@ -109,7 +110,7 @@ export class AddOrEditFormComponent implements OnInit {
     }
     )
     this.toastr.info(`${this.addoredit.get('name')?.value} was added.`, 'Success', {positionClass: 'toast-top-center'})
-    this.router.navigate(['/admin'])
+    this.closeModal()
     }
 
     getValue(event: any){
@@ -130,5 +131,11 @@ export class AddOrEditFormComponent implements OnInit {
     }
     }
     }
+
+    closeModal() {
+      this.sendAdd.emit(false)
+      this.onClose.emit(true);
+  }
+
 }
 

@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { map } from 'rxjs';
-import { AuthService } from '../authentication/auth.service';
-import { ItemModel, User } from '../interfaces/interfaces';
-import { ItemsService } from '../services/items.service';
+import { AuthService } from '../core/authentication/auth.service';
+import { ItemModel, User } from '../core/interfaces/interfaces';
+import { ItemsService } from '../core/services/items.service';
 
 
 @Component({
@@ -18,7 +18,9 @@ export class AdminPageComponent implements OnInit{
   displayedItemColumns: string[] = ['name', 'director', 'year', 'id', 'edit', 'delete'];
   dataSource: any;
   itemsSource: any;
-  
+  add: boolean = false
+  toggle: boolean = false
+  item!: ItemModel
   constructor(private itemsService: ItemsService, private authService: AuthService, private toastr: ToastrService){}
   ngOnInit(): void {
   this.getAllUsers()
@@ -34,6 +36,11 @@ export class AdminPageComponent implements OnInit{
       return tempDoc})).subscribe((res: any) => {
       this.dataSource = new MatTableDataSource<User[]>(res)
     })
+  }
+
+  emitItem(item: ItemModel){
+    this.toggle = true
+    this.item = item
   }
 
   getAllItems(){
@@ -68,6 +75,7 @@ export class AdminPageComponent implements OnInit{
   }
 
   deleteItem(item: ItemModel){
+    
     if(window.confirm('Are you sure you want to delete this item?')){
     this.itemsService.delete(item).subscribe()
     for(let user of this.dataSource.data){
@@ -96,4 +104,9 @@ export class AdminPageComponent implements OnInit{
   logout(): void {
     this.authService.signOut()
   }
+
+  modalClosed(toggle: boolean) {
+    this.add = false;
+    this.toggle = false;
+}
 }

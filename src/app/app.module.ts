@@ -13,9 +13,8 @@ import {MatSliderModule} from  '@angular/material/slider';
 import {MatIconModule} from '@angular/material/icon'
 import { HomeComponent } from './home/home.component';
 import { AngularFireModule } from '@angular/fire/compat';
-
 import {  HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AuthInterceptorService } from './authentication/auth-interceptor.service';
+import { AuthInterceptorService } from './core/authentication/auth-interceptor.service';
 import {MatSelectModule} from '@angular/material/select';
 import { LatestPipe } from './pipes/latest.pipe';
 import { AddOrEditFormComponent } from './shared/add-or-edit-form/add-or-edit-form.component';
@@ -28,6 +27,11 @@ import { NotFoundComponent } from './shared/not-found/not-found.component';
 import { NavbarComponent } from './navbar/navbar.component'
 import { environment } from 'src/environments/environment';
 import { ToastrModule } from 'ngx-toastr';
+import { LayoutComponent } from './layout/layout.component';
+import { SaveMovieDirective } from './directives/save-movie.directive';
+import { CommonModule } from '@angular/common';
+
+
 
 
 @NgModule({
@@ -42,8 +46,9 @@ import { ToastrModule } from 'ngx-toastr';
     SavedMoviesComponent,
     AdminPageComponent,
     NotFoundComponent,
-    NavbarComponent
-    
+    NavbarComponent,
+    LayoutComponent,
+    SaveMovieDirective
   ],
   imports: [
     BrowserModule,
@@ -60,6 +65,7 @@ import { ToastrModule } from 'ngx-toastr';
     MatTableModule,
     MatIconModule,
     MatSelectModule,
+    CommonModule,
     ToastrModule.forRoot(),
     AngularFireModule.initializeApp(environment.firebase)
 

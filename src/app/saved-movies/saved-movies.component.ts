@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { AuthService } from '../authentication/auth.service';
-import { ItemModel, User } from '../interfaces/interfaces';
+import { AuthService } from '../core/authentication/auth.service';
+import { ItemModel, User } from '../core/interfaces/interfaces';
 
 
 @Component({
@@ -28,7 +28,7 @@ constructor(private authService: AuthService, private toastr: ToastrService){}
        for(let i = 0; i< this.activeUser!.savedMovies.length; i++){
         if(this.activeUser?.savedMovies[i].id === item.id){
           this.activeUser?.savedMovies.splice(i,1)
-          this.authService.getUser(localStorage.getItem('id')!).update({ savedMovies: this.activeUser?.savedMovies })
+          this.authService.getUser(this.activeUser?.uid!).update({ savedMovies: this.activeUser?.savedMovies })
           this.toastr.error(`${item.name} was removed from your save list!`, 'Movie Removed', {positionClass: 'toast-top-center'})
         }
        }
