@@ -1,4 +1,3 @@
-
 <div class="container-fluid flex-display">
   <div id="carouselExampleCaptions" class="carousel carousel-fade" data-bs-ride="carousel">
     <div class="carousel-inner d-flex">
@@ -87,7 +86,7 @@
           </div>
           <div class="movie_social">
             <ul>
-              <li *ngIf="!savedMovies.includes(item.id!)"><i class="material-icons" style="font-size:x-large;"></i></li>
+              <li *ngIf="!savedMovies.includes(item.id!)"><i class="material-icons" style="font-size:x-large;" (click)="addToSavedList(item)"></i></li>
               <li *ngIf="savedMovies.includes(item.id!)"><i class="material-icons" style="font-size:x-large; color: black" (click)="remove(item)"></i></li>
               <li><i class="material-icons" style="font-size:x-large;"
                   [routerLink]="['/details', item.id]">more_vert</i></li>

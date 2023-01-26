@@ -31,9 +31,6 @@ import { LayoutComponent } from './layout/layout.component';
 import { SaveMovieDirective } from './directives/save-movie.directive';
 import { CommonModule } from '@angular/common';
 
-
-
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -57,9 +54,9 @@ import { CommonModule } from '@angular/common';
     MatSliderModule,
     MatSlideToggleModule,
     MatCardModule,
-  MatInputModule,
-  MatButtonModule,
-  ReactiveFormsModule,
+    MatInputModule,
+    MatButtonModule,
+    ReactiveFormsModule,
     BrowserAnimationsModule,
     HttpClientModule,
     MatTableModule,

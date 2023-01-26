@@ -14,6 +14,7 @@ export class AuthService {
 
   login(email: string, password: string){
    this.fireAuth.signInWithEmailAndPassword(email,password).then( (res) => {
+  
     localStorage.setItem('id', 'user logged in')
     res.user?.getIdToken().then(token => {
       localStorage.setItem('token', token)})
@@ -25,10 +26,9 @@ export class AuthService {
 
   register(email: string, password: string, user: User){
     this.fireAuth.createUserWithEmailAndPassword(email,password).then( res => {
-      localStorage.setItem('id', res.user?.uid!)
       this.registerUser(res.user);
-      this.update(user)
-      this.router.navigate(['/home'])
+      this.update(user, res.user!.uid)
+      this.sendEmailVerification(res.user)
     },err => {
       this.toastr.error(err.message, 'Error!', {positionClass: 'toast-top-center'})
     }
@@ -50,8 +50,8 @@ export class AuthService {
    return this.fireAuth.authState
   }
 
-  update(user: User){
-    this.fireStore.collection('users').doc(localStorage.getItem('id')!).update({firstName: user.firstName, lastName: user.lastName, role: user.role, ratings: user.ratings, savedMovies: user.savedMovies})
+  update(user: User, id: string){
+    this.fireStore.collection('users').doc(id).update({firstName: user.firstName, lastName: user.lastName, role: user.role, ratings: user.ratings, savedMovies: user.savedMovies})
   }
 
   getUser(id: string){
@@ -68,6 +68,22 @@ export class AuthService {
       this.router.navigate(['/login'])
     }, err => {
       alert(err.message)
+    })
+  }
+
+  sendEmailVerification(user: any){
+    user.sendEmailVerification().then((res: any) => {
+      this.toastr.info('Please verify your Email', 'Email sent', {positionClass: 'toast-top-center'})
+    }, () => {
+      this.toastr.error('Something went wrong', 'Error', {positionClass: 'toast-top-center'})
+    })
+  }
+
+  forgotPassword(email: string){
+    this.fireAuth.sendPasswordResetEmail(email).then(() => {
+      this.toastr.info('Reset password email has been sent', 'Email sent', {positionClass: 'toast-top-center'})
+    }, () => {
+      this.toastr.error('Something went wrong', 'Error', {positionClass: 'toast-top-center'})
     })
   }
 }

@@ -38,9 +38,9 @@ export class AdminPageComponent implements OnInit{
     })
   }
 
-  emitItem(item: ItemModel){
+  emitItem(item: ItemModel | null){
     this.toggle = true
-    this.item = item
+    this.item = item!
   }
 
   getAllItems(){

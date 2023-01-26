@@ -20,7 +20,9 @@
   <div class="button">
     <button type="submit" mat-button [disabled]="!loginForm.valid" (click)="login()">Login</button>
   </div>
+  <br>
 <a (click)="toggle = true" style="cursor: pointer;color: blue;">Not Registered? Register Here.</a>
+<a style="float:right; cursor: pointer; color: blue; text-decoration: underline;" (click)="forgotPassword()">Forgot Password?</a>
 </form>
 
 </mat-card-content>
@@ -75,6 +77,7 @@
     <button type="submit" mat-button [disabled]="!registerForm.valid" (click)="register()">Register</button>
   </div>
   <a (click)="toggle = false" style="cursor: pointer;color: blue;">Already Registered? Log In Here.</a>
+ 
 </form>
 
 </mat-card-content>

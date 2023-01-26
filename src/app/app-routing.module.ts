@@ -16,7 +16,7 @@ const routes: Routes = [
   { path: 'login', component: LoginFormComponent },
   {
     path: '', component: LayoutComponent, children: [
-      { path: 'home', component: HomeComponent },
+      { path: 'home', component: HomeComponent , canActivate: [HomeGuardGuard]},
       { path: 'details/:id', component: DetailedPageComponent },
       { path: 'savedmovies', component: SavedMoviesComponent },
         {

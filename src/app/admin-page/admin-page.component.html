@@ -9,7 +9,7 @@
       <input matInput (keyup)="applyItemFilter($event)" placeholder="Ex. ium" #inputItem>
     </mat-form-field>
     </div>
-  <div class="col-1"><button class="btn btn-outline-primary" (click)="toggle = true;add = true">Add Item</button></div></div>
+  <div class="col-1"><button class="btn btn-outline-primary" (click)="toggle = true;emitItem(null)">Add Item</button></div></div>
     <table mat-table [dataSource]="itemsSource" class="mat-elevation-z8">
     
       <ng-container matColumnDef="name">
@@ -91,5 +91,5 @@
       <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
     </tr>
   </table></div>
-  <app-add-or-edit-form *ngIf="toggle" [item]="item" [add]="add" (onClose)="modalClosed($event)"></app-add-or-edit-form>
+  <app-add-or-edit-form *ngIf="toggle" [item]="item" (onClose)="modalClosed($event)"></app-add-or-edit-form>
   

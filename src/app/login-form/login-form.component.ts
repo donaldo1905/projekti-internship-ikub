@@ -65,6 +65,14 @@ register(){
   role: 'user'
 }
   this.authService.register(this.registerForm.get('registerEmail')?.value, this.registerForm.get('registerPassword')?.value,userData)
+  setTimeout(() => {
+    this.registerForm.reset()
+  }, 1000);
+  
+}
+
+forgotPassword(){
+  this.authService.forgotPassword(this.loginForm.get('loginEmail')?.value)
 }
 
 }

@@ -4,9 +4,8 @@ import { Directive, ElementRef, Input } from '@angular/core';
   selector: '[appSaveMovie]'
 })
 export class SaveMovieDirective {
-@Input() color!: string;
   constructor(private el: ElementRef) {
-    this.el.nativeElement.style.color = this.color;
+    this.el.nativeElement.style.color = 'red';
    }
 
 }
