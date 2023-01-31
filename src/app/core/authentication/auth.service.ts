@@ -14,11 +14,15 @@ export class AuthService {
 
   login(email: string, password: string){
    this.fireAuth.signInWithEmailAndPassword(email,password).then( (res) => {
-  
+  // if(res.user?.emailVerified){
     localStorage.setItem('id', 'user logged in')
     res.user?.getIdToken().then(token => {
       localStorage.setItem('token', token)})
       this.router.navigate(['/home'])
+    // }
+      // else{
+      //   this.toastr.error('Please verify your email!', 'Error!', {positionClass: 'toast-top-center'})
+      // }
    },err => {
      this.toastr.error(err.message, 'Error!', {positionClass: 'toast-top-center'})
    })

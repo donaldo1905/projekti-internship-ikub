@@ -38,11 +38,11 @@
         <mat-form-field appearance="fill">
             <mat-label>Categories</mat-label>
             <mat-select formControlName="categories" multiple>
-              <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}</mat-option>
+              <mat-option *ngFor="let topping of categoryList" [value]="topping">{{topping}}</mat-option>
             </mat-select>
           </mat-form-field>
           <div class="modal-footer">
-            <button type="submit" class="btn btn-primary"  (click)="addNewItem()" [disabled]="!addoredit.valid">Save</button>
+            <button type="submit" class="btn btn-primary"  (click)="saveItem()" [disabled]="!addoredit.valid">Save</button>
             <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
           </div>
         </form>

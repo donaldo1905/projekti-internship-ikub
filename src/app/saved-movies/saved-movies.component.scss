@@ -369,3 +369,39 @@ mat-form-field{
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+.dash {
+  position: fixed;
+    top: calc(57px + 3rem);
+    right: 0;
+    text-align: center;
+    transform: translate(-50%);
+}
+
+.dash img {
+  border-radius: 100%;
+  object-fit: cover;
+  object-position: center;
+  width: 150px;
+  height: 150px;
+  margin-bottom: 16px;
+  border: 2px solid gray;
+}
+
+.dash h2 {
+  font-weight: bold;
+}
+
+.dash h4 {
+  font-weight:lighter;
+}
+
+.col-9 {
+  border-right: 2px solid grey;
+}
+.col-6 {
+  padding: 20px 10px;
+}
+.col-3 {
+  background-color: rgb(244, 244, 244);
+}

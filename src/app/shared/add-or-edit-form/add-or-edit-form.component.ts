@@ -13,19 +13,21 @@ import { ItemsService } from 'src/app/core/services/items.service';
   styleUrls: ['./add-or-edit-form.component.scss']
 })
 export class AddOrEditFormComponent implements OnInit {
-  toppingList: string[] = ['Action', 'Comedy', 'Drama', 'Crime', 'Fantasy', 'Adventure', 'Sci-Fi', 'Horror', 'Thriller', 'Historic', 'Epic'];
+  categoryList: string[] = ['Action', 'Comedy', 'Drama', 'Crime', 'Fantasy', 'Adventure', 'Sci-Fi', 'Horror', 'Thriller', 'Historic', 'Epic'];
   addoredit: FormGroup = new FormGroup({})
   fileValue!: string;
-  // @Input() add!: boolean;
+  id!: string
   @Output() sendAdd: EventEmitter<boolean> = new EventEmitter()
   @Input()
-  set item(item: any) {
+  set item(item: ItemModel) {
     if (item !== null) {
       this.addoredit = this.setForm(item);
+      this.id = item.id!
     }else {
       this.addoredit = this.setForm(null);
     }
   }
+  
   @Output() onClose: EventEmitter<boolean> = new EventEmitter();
   constructor(private itemsService: ItemsService, private fb: FormBuilder, private router: Router, private authService: AuthService, private toastr: ToastrService) { }
   ngOnInit(): void {
@@ -46,41 +48,16 @@ export class AddOrEditFormComponent implements OnInit {
         'categories': new FormControl(item?.category, Validators.required)
       }
     )
-    // this.addoredit = new FormGroup({
-    //   'name': new FormControl(null, Validators.required),
-    //   'director': new FormControl(null, Validators.required),
-    //   'year': new FormControl(null, Validators.required),
-    //   'runtime': new FormControl(null, Validators.required),
-    //   'photo': new FormControl(null, Validators.required),
-    //   'file': new FormControl(null),
-    //   'trailer': new FormControl(null, Validators.required),
-    //   'description': new FormControl(null, Validators.required),
-    //   'categories': new FormControl(null, Validators.required)
-    // })
-
-    // if (this.item?.id && !this.add) {
-    //   this.itemsService.getItem(this.item!.id!).subscribe(res => {
-    //     this.addoredit.get('name')?.setValue(res.name)
-    //     this.addoredit.get('director')?.setValue(res.director)
-    //     this.addoredit.get('year')?.setValue(res.year)
-    //     this.addoredit.get('runtime')?.setValue(res.runTime)
-    //     this.addoredit.get('photo')?.setValue(res.photo)
-    //     this.addoredit.get('trailer')?.setValue(res.trailer)
-    //     this.addoredit.get('description')?.setValue(res.description)
-    //     this.addoredit.get('categories')?.setValue(res.category)
-    //   }
-    //   )
-    // }
   }
 
-  editItem() {
+  saveItem() {
     let edittedMovie: ItemModel = {
       name: this.addoredit.get('name')?.value,
       runTime: this.addoredit.get('runtime')?.value,
       description: this.addoredit.get('description')?.value,
       director: this.addoredit.get('director')?.value,
       photo: this.addoredit.get('photo')?.value,
-      id: this.item!.id,
+      id: this.id,
       trailer: this.addoredit.get('trailer')?.value,
       category: this.addoredit.get('categories')?.value,
       year: this.addoredit.get('year')?.value
@@ -92,45 +69,28 @@ export class AddOrEditFormComponent implements OnInit {
       })
       return tempDoc
     })).subscribe(res => {
+      if(this.id){
+        this.itemsService.editItem(this.id, edittedMovie).subscribe()
+        this.toastr.info(`Movie with id:${this.id} was edited.`, 'Success', { positionClass: 'toast-top-center' })
+        this.itemsService.itemToAdd.next(edittedMovie)
+        this.closeModal()
+      }else{
+        this.itemsService.createItem(edittedMovie).subscribe(res => {
+          edittedMovie.id = res.name
+          this.itemsService.itemToAdd?.next(edittedMovie)
+          this.toastr.info(`${this.addoredit.get('name')?.value} was added.`, 'Success', { positionClass: 'toast-top-center' })
+          this.closeModal()
+        })
+      }
       for (let user of res) {
-        console.log(user.uid)
         for (let i = 0; i < user.savedMovies?.length; i++) {
-          if (user.savedMovies[i].id === this.item!.id) {
+          if (user.savedMovies[i].id === this.id) {
             user.savedMovies[i] = edittedMovie
             this.authService.getUser(user.uid).update({ savedMovies: user.savedMovies })
           }
         }
       }
     })
-    this.itemsService.editItem(this.item!.id!, edittedMovie).subscribe()
-    this.toastr.info(`Movie with id:${this.item!.id} was edited.`, 'Success', { positionClass: 'toast-top-center' })
-    this.itemsService.itemToAdd.next(edittedMovie)
-    this.closeModal()
-  }
-
-  addNewItem() {
-    let newMovie: ItemModel = {
-      name: this.addoredit.get('name')?.value,
-      runTime: this.addoredit.get('runtime')?.value,
-      comments: [],
-      description: this.addoredit.get('description')?.value,
-      director: this.addoredit.get('director')?.value,
-      photo: this.addoredit.get('photo')?.value,
-      rating: [],
-      trailer: this.addoredit.get('trailer')?.value,
-      category: this.addoredit.get('categories')?.value,
-      year: this.addoredit.get('year')?.value
-    }
-    if (this.fileValue) {
-      newMovie.photo = this.fileValue
-    }
-    this.itemsService.createItem(newMovie).subscribe(res => {
-      newMovie.id = res.name
-      this.itemsService.itemToAdd?.next(newMovie)
-    }
-    )
-    this.toastr.info(`${this.addoredit.get('name')?.value} was added.`, 'Success', { positionClass: 'toast-top-center' })
-    this.closeModal()
   }
 
   getValue(event: any) {

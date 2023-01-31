@@ -33,8 +33,4 @@ constructor(private authService: AuthService, private toastr: ToastrService){}
         }
        }
   }
-
-  logout(): void {
-    this.authService.signOut()
-  }
 }
