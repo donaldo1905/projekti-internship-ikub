@@ -1,16 +1,3 @@
-.logo-align {
-    display: flex;
-      align-items: center;
-  } 
-  
-  .nav-icons{
-    font-size: xx-large;
-    padding-right: 0 !important;
-  }
-  
-  mat-icon{
-    padding-right: 30px;
-  }
 
   img{
     top: 85px;
@@ -22,6 +9,8 @@
 fieldset, label { margin: 0; padding: 0; }
 body{ margin: 20px; }
 h1 { font-size: 1.5em; margin: 10px}
+
+
 
 .col-8{
 top: auto;
@@ -121,14 +110,20 @@ iframe{
   }
 
   @media screen and (max-width: 753px) {
-    .col-5{
-    width: 70%;
+    .row{
+      display:block;
+      text-align: -webkit-center;
+    }
+    .rating{
+      width: max-content;
     }
     iframe{
       width: 370px;
       height: 290px;
-      transform: translate(-20%);
     }
+ .col-4{
+  display: none;
+ }
       }
 
       @media screen and (max-width: 548px) {
@@ -142,5 +137,9 @@ iframe{
         }
         .img-div{
           display: none;
+        }
+        .row{
+          display:block;
+          text-align: -webkit-center;
         }
           }
