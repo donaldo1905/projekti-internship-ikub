@@ -60,9 +60,9 @@ register(){
   let userData: User = {
   firstName: this.registerForm.get('firstName')!.value, 
   lastName: this.registerForm.get('lastName')!.value,
-  ratings: [],
   savedMovies: [],
-  role: 'user'
+  role: 'user',
+  photo: 'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png'
 }
   this.authService.register(this.registerForm.get('registerEmail')?.value, this.registerForm.get('registerPassword')?.value,userData)
   setTimeout(() => {

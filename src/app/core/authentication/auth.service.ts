@@ -55,7 +55,7 @@ export class AuthService {
   }
 
   update(user: User, id: string){
-    this.fireStore.collection('users').doc(id).update({firstName: user.firstName, lastName: user.lastName, role: user.role, ratings: user.ratings, savedMovies: user.savedMovies})
+    this.fireStore.collection('users').doc(id).update({firstName: user.firstName, lastName: user.lastName, role: user.role, savedMovies: user.savedMovies, photo: user.photo})
   }
 
   getUser(id: string){

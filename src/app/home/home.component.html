@@ -86,9 +86,9 @@
           </div>
           <div class="movie_social">
             <ul>
-              <li *ngIf="!savedMovies.includes(item.id!)"><i class="material-icons" style="font-size:x-large;" (click)="addToSavedList(item)"></i></li>
-              <li *ngIf="savedMovies.includes(item.id!)"><i class="material-icons" style="font-size:x-large; color: black" (click)="remove(item)"></i></li>
-              <li><i class="material-icons" style="font-size:x-large;"
+              <li *ngIf="!savedMovies.includes(item.id!)"><i class="material-icons" appSaveMovie (click)="addToSavedList(item)"></i></li>
+              <li *ngIf="savedMovies.includes(item.id!)"><i class="material-icons" style="font-size:x-large; color: black; cursor: pointer;" (click)="remove(item)"></i></li>
+              <li><i class="material-icons" appSaveMovie style="font-size:x-large;"
                   [routerLink]="['/details', item.id]">more_vert</i></li>
             </ul>
           </div>

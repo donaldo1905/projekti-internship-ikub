@@ -15,8 +15,9 @@ export interface ItemModel{
   export interface User{
     firstName: string
     lastName: string
+    photo: string
     savedMovies: ItemModel[]
-    ratings: {movieId: string, rating: number}[]
     role: 'user'
+    email?: string
     uid?: string
   }
