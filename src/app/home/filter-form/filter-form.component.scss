@@ -1,0 +1,35 @@
+.year{
+    display: flex;
+    justify-content: space-between;
+    place-items: center;
+  }
+  
+  .filter{
+    padding: 75px 0;
+    width: 300px;
+  }
+  
+  ::ng-deep .cdk-overlay-container{
+    z-index: 9999;
+  }
+  
+  .modal-dialog{
+    margin: 5% auto !important;
+  }
+  
+  mat-form-field{
+    display: block;
+    padding-top: 0;
+  }
+  
+  .modal-title{
+    margin: 0
+  }
+  
+  .inline{
+    display: flex;
+      justify-content: space-between;
+  }
+  .block{
+    display: block;
+  }

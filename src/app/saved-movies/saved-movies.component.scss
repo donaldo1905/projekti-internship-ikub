@@ -79,19 +79,7 @@ html, body{
         padding: 0;
         li{
           display: inline-block;
-          color: rgba(0,0,0,0.3);
-          transition: color 0.3s;
-          transition-delay: 0.15s;
           margin: 0 10px;
-         
-          &:hover{
-            transition: color 0.3s;
-            color: rgba(0,0,0,0.7);
-          }
-          i{
-            font-size: 19px;
-            cursor: pointer;
-          }
         }
       }
     }
@@ -146,7 +134,7 @@ h3{
     top: calc(57px + 3rem);
     right: 0;
     text-align: center;
-    transform: translate(-50%);
+    padding-right: 30px;
 }
 
 .dash img {
@@ -179,9 +167,9 @@ h3{
 }
 
 .edit {
-  bottom: 40%;
-  left: 69%;
-  position: absolute;
+  position: relative;
+  top: 63px;
+  right: 48px;
   font-size: x-large;
   color: white;
   background: black;
@@ -194,19 +182,19 @@ h3{
 
 @media screen and (max-width: 1000px) {
   .dash{
-    transform: translate(-30%);
+    padding-right: 20px;
   }
 }
 
 @media screen and (max-width: 850px) {
   .dash{
-    transform: translate(-20%);
+    padding-right: 15px;
   }
 }
 
 @media screen and (max-width: 750px) {
   .dash{
-    transform: translate(-10%);
+    padding-right: 10px;
   }
   .dash img{
     width: 100px;

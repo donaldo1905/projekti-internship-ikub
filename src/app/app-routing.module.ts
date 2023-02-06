@@ -10,6 +10,7 @@ import { LoginFormComponent } from './login-form/login-form.component';
 import { SavedMoviesComponent } from './saved-movies/saved-movies.component';
 import { AddOrEditFormComponent } from './shared/add-or-edit-form/add-or-edit-form.component';
 import { NotFoundComponent } from './shared/not-found/not-found.component';
+import { FilterFormComponent } from './home/filter-form/filter-form.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -28,6 +29,7 @@ const routes: Routes = [
   }
     ]
   },
+  { path: 'filter', component: FilterFormComponent }, 
   { path: 'not-found', component: NotFoundComponent },
   { path: '**', redirectTo: 'home', pathMatch: 'full' },
 ];

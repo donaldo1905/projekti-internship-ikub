@@ -30,6 +30,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { LayoutComponent } from './layout/layout.component';
 import { SaveMovieDirective } from './directives/save-movie.directive';
 import { CommonModule } from '@angular/common';
+import { FilterFormComponent } from './home/filter-form/filter-form.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { CommonModule } from '@angular/common';
     NotFoundComponent,
     NavbarComponent,
     LayoutComponent,
-    SaveMovieDirective
+    SaveMovieDirective,
+    FilterFormComponent
   ],
   imports: [
     BrowserModule,
