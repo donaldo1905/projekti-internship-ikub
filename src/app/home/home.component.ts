@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, map, Observable, of, startWith, switchMap } from 'rxjs';
 import { ItemsService } from '../core/services/items.service';
@@ -12,18 +12,11 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+
   items: ItemModel[] = []
-  searchForm: FormControl = new FormControl('')
-  categories: FormControl = new FormControl()
-  startYear: FormControl = new FormControl(1970)
-  endYear: FormControl = new FormControl(2022)
-  startTime: FormControl = new FormControl(100)
-  endTime: FormControl = new FormControl(300)
-  base64: FormControl = new FormControl()
-  categoriesOptions: string[] = ['Action', 'Comedy', 'Drama', 'Crime', 'Fantasy', 'Adventure', 'Sci-Fi', 'Horror', 'Thriller', 'Historic', 'Epic'];
-  filterbytime: FormGroup = new FormGroup({})
   activeUser: any;
   savedMovies: string[] = [];
+
   constructor(private authService: AuthService, private itemsService: ItemsService, private toastr: ToastrService) { }
 
   ngOnInit(): void {
@@ -60,63 +53,11 @@ export class HomeComponent implements OnInit {
     this.authService.signOut()
   }
 
-  filteredMovies: Observable<ItemModel[]> = this.searchForm?.valueChanges.pipe(startWith(''), debounceTime(200),
-    switchMap(searchValue => {
-      return of(this.items).
-        pipe(map(movies => {
-          return movies.filter(movies => movies.name.toLowerCase().includes(searchValue))
-        }))
-    }))
-
-  filteredByStartYear: Observable<ItemModel[]> = this.startYear?.valueChanges.pipe(distinctUntilChanged(), startWith(1970), debounceTime(200),
-    switchMap(searchValue => {
-      return this.filteredMovies.
-        pipe(map(movies => {
-          return movies.filter(movies =>
-            movies.year >= searchValue && movies.name.toLowerCase().includes(this.searchForm.value)
-          )
-        }))
-
-    }))
-
-  filteredByEndYear: Observable<ItemModel[]> = this.endYear?.valueChanges.pipe(distinctUntilChanged(), startWith(2022), debounceTime(200),
-    switchMap(searchValue => {
-      return this.filteredByStartYear.
-        pipe(map(movies => {
-          return movies.filter(movies => movies.year <= searchValue && movies.year >= this.startYear?.value)
-        }))
-    }))
-
-  filteredByStartTime: Observable<ItemModel[]> = this.startTime?.valueChanges.pipe(distinctUntilChanged(), startWith(100), debounceTime(200),
-    switchMap(searchValue => {
-      return this.filteredByEndYear.
-        pipe(map(movies => {
-          return movies.filter(movies => movies.runTime >= searchValue && movies.runTime <= this.endTime?.value && movies.year <= this.endYear.value && movies.year >= this.startYear?.value)
-        }))
-    }))
-
-  filteredByEndTime: Observable<ItemModel[]> = this.endTime?.valueChanges.pipe(distinctUntilChanged(), startWith(300), debounceTime(200),
-    switchMap(searchValue => {
-      return this.filteredByStartTime.
-        pipe(map(movies => {
-          return movies.filter(movies => movies.runTime <= searchValue && movies.runTime >= this.startTime?.value && movies.year <= this.endYear.value && movies.year >= this.startYear?.value)
-        }))
-    }))
-
-  finalFilter: Observable<ItemModel[]> = this.categories?.valueChanges.pipe(distinctUntilChanged(), startWith(''), debounceTime(200),
-    switchMap(searchValue => {
-      if (searchValue) {
-        console.log(searchValue);
-        return this.filteredByEndTime.
-          pipe(map(movies => {
-            if(this.categories.dirty){
-            return movies.filter(movies => movies.category.includes(searchValue) && movies.runTime <= this.endTime.value && movies.runTime >= this.startTime?.value && movies.year <= this.endYear.value && movies.year >= this.startYear?.value)
-          }return this.items}))
+    filteredItems: Observable<ItemModel[]> = this.itemsService.filteredItems.pipe(map(items => 
+      {
+        return items
       }
-      
-      return this.filteredByEndTime.pipe(map(movies => { return movies }))
-      
-    }))
+      ))
 
   addToSavedList(item: ItemModel) {
       if (!this.activeUser?.savedMovies) {

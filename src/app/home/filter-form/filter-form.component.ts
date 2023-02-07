@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, DoCheck, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, map, Observable, of, startWith, switchMap } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, map, Observable, of, startWith, switchMap, take } from 'rxjs';
 import { ItemModel } from 'src/app/core/interfaces/interfaces';
 import { ItemsService } from 'src/app/core/services/items.service';
 
@@ -25,6 +25,8 @@ export class FilterFormComponent implements OnInit{
   ngOnInit(): void {
     this.getAllItems()
   }
+
+  
 
   getAllItems(){
     this.itemsService.getItems().pipe(map((res: any) => {
@@ -53,11 +55,11 @@ export class FilterFormComponent implements OnInit{
     switchMap(searchValue => {
       return this.filteredMovies.
         pipe(map(movies => {
+          
           return movies.filter(movies =>
             movies.year >= searchValue && movies.name.toLowerCase().includes(this.searchForm.value)
           )
         }))
-
     }))
 
   filteredByEndYear: Observable<ItemModel[]> = this.endYear?.valueChanges.pipe(distinctUntilChanged(), startWith(2022), debounceTime(200),
@@ -87,15 +89,18 @@ export class FilterFormComponent implements OnInit{
   finalFilter: Observable<ItemModel[]> = this.categories?.valueChanges.pipe(distinctUntilChanged(), startWith(''), debounceTime(200),
     switchMap(searchValue => {
       if (searchValue) {
-        console.log(searchValue);
         return this.filteredByEndTime.
           pipe(map(movies => {
             if(this.categories.dirty){
-             
+              this.itemsService.filteredItems.next(movies.filter(movies => movies.category.includes(searchValue) && movies.runTime <= this.endTime.value && movies.runTime >= this.startTime?.value && movies.year <= this.endYear.value && movies.year >= this.startYear?.value))
             return movies.filter(movies => movies.category.includes(searchValue) && movies.runTime <= this.endTime.value && movies.runTime >= this.startTime?.value && movies.year <= this.endYear.value && movies.year >= this.startYear?.value)
-          }return this.items}))
+          }
+          this.itemsService.filteredItems.next(this.items)
+          return this.items}))
       }
-      return this.filteredByEndTime.pipe(map(movies => { return movies }))
+      return this.filteredByEndTime.pipe(map(movies => { 
+        this.itemsService.filteredItems.next(movies)
+        return movies }))
     })
     )
 }

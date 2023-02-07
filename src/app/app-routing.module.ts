@@ -29,7 +29,6 @@ const routes: Routes = [
   }
     ]
   },
-  { path: 'filter', component: FilterFormComponent }, 
   { path: 'not-found', component: NotFoundComponent },
   { path: '**', redirectTo: 'home', pathMatch: 'full' },
 ];

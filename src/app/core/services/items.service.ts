@@ -10,7 +10,8 @@ import { ItemModel } from '../interfaces/interfaces';
 export class ItemsService {
 
   itemToAdd: Subject<ItemModel> = new Subject<ItemModel>()
-
+  filteredItems: Subject<ItemModel[]> = new Subject<ItemModel[]>()
+  
   constructor(private http: HttpClient) { }
 
   createItem(item: ItemModel): Observable<ItemModel>{
