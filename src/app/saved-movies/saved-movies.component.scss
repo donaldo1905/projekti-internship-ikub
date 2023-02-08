@@ -179,6 +179,30 @@ h3{
   transform: rotate(-90deg);
 }
 
+.uploadPhoto{
+  width: 142px;
+}
+
+input[type=file]::file-selector-button {
+  border: none;
+  background: #084cdf;
+  border-radius: 10px;
+  color: #fff;
+  cursor: pointer;
+  transition: background .2s ease-in-out;
+  font-size: initial;
+  height: 55px;
+  width: 65px;
+}
+
+input[type=file]::file-selector-button:hover {
+  background: #0d45a5;
+  
+}
+
+input[type=file] {
+  font-size: 0; }
+
 @media screen and (max-width: 1000px) {
   .dash{
     padding-right: 20px;
@@ -194,10 +218,17 @@ h3{
 @media screen and (max-width: 750px) {
   .dash{
     padding-right: 10px;
+    h4{
+      font-size: small;
+    }
   }
   .dash img{
     width: 100px;
     height: 100px;
+  }
+  .edit{
+    top: 45px;
+    right: 40px;
   }
 }
 

@@ -19,6 +19,7 @@ constructor(private authService: AuthService, private toastr: ToastrService){}
     this.getActiveUser()
     this.editUser = new FormGroup({
       'name' : new FormControl(this.activeUser?.firstName, Validators.required),
+      'file' : new FormControl(null),
       'photo' : new FormControl(this.activeUser?.photo, Validators.required),
       'lname' : new FormControl(this.activeUser?.lastName, Validators.required)
     })
@@ -51,5 +52,22 @@ constructor(private authService: AuthService, private toastr: ToastrService){}
     this.activeUser!.lastName = this.editUser.get('lname')?.value
     this.activeUser!.photo = this.editUser.get('photo')?.value
     this.toggleform = false
+  }
+
+  getValue(event: any) {
+    let reader = new FileReader()
+    reader.readAsDataURL(event.target.files[0])
+    reader.onloadend = () => {
+      let img = new Image();
+      img.src = reader.result as string;
+      let canvas = document.createElement('canvas')
+      canvas.width = 150;
+      canvas.height = 150;
+      let ctx = canvas.getContext('2d');
+      img.onload = () => {
+        ctx!.drawImage(img, 0, 0, 150, 150);
+        this.editUser.get('photo')?.setValue(ctx!.canvas.toDataURL())
+      }
+    }
   }
 }

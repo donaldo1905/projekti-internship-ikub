@@ -38,10 +38,11 @@
   <h2 *ngIf="!toggleform">{{activeUser?.firstName}} {{activeUser?.lastName}}</h2>
   <h4 *ngIf="!toggleform">{{activeUser?.email}}</h4>
   <form [formGroup]="editUser" *ngIf="toggleform">
-  <mat-form-field appearance="outline">
+  <mat-form-field appearance="outline" class="uploadPhoto">
     <mat-label>Photo...</mat-label>
     <input matInput formControlName="photo">
-  </mat-form-field><br>
+  </mat-form-field>
+  <input type="file" formControlName="file" accept="image/*" formControlName="file" (change)="getValue($event)"><br>
   <mat-form-field appearance="outline">
     <mat-label>First Name...</mat-label>
     <input matInput formControlName="name">
