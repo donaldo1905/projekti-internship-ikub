@@ -24,13 +24,14 @@ import { SavedMoviesComponent } from './saved-movies/saved-movies.component';
 import { AdminPageComponent } from './admin-page/admin-page.component';
 import { MatTableModule } from '@angular/material/table';
 import { NotFoundComponent } from './shared/not-found/not-found.component';
-import { NavbarComponent } from './navbar/navbar.component'
+import { NavbarComponent } from './layout/navbar/navbar.component'
 import { environment } from 'src/environments/environment';
 import { ToastrModule } from 'ngx-toastr';
 import { LayoutComponent } from './layout/layout.component';
 import { SaveMovieDirective } from './directives/save-movie.directive';
 import { CommonModule } from '@angular/common';
 import { FilterFormComponent } from './home/filter-form/filter-form.component';
+import { CardComponent } from './shared/card/card.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { FilterFormComponent } from './home/filter-form/filter-form.component';
     NavbarComponent,
     LayoutComponent,
     SaveMovieDirective,
-    FilterFormComponent
+    FilterFormComponent,
+    CardComponent
   ],
   imports: [
     BrowserModule,
@@ -73,3 +75,4 @@ import { FilterFormComponent } from './home/filter-form/filter-form.component';
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+ 

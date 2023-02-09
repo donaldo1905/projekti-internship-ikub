@@ -1,61 +1,65 @@
 <div class="container-fluid" style="padding: 0;">
   <div class="row">
     <div class="col-9">
-  <div class="container-fluid px-5 py-5">
-  <div class="row" *ngIf="activeUser; else spinner">
-  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xxl-4" *ngFor="let item of activeUser?.savedMovies">
-    <div class="movie_card h-100">
-      <div class="info_section">
-        <div class="movie_header">
-          <img class="locandina" src='{{item.photo}}' />
-          <div>
-            <h1>{{item.name}}</h1>
-            <h4>{{item.year}} | {{item.runTime}} min</h4>
-            <span *ngFor="let category of item.category">{{category}} </span>
+      <div class="container-fluid px-5 py-5">
+        <div class="row" *ngIf="activeUser; else spinner">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xxl-4" *ngFor="let item of activeUser?.savedMovies">
+            <div class="movie_card h-100">
+              <div class="info_section">
+                <div class="movie_header">
+                  <img class="locandina" src='{{item.photo}}' />
+                  <div>
+                    <h1>{{item.name}}</h1>
+                    <h4>{{item.year}} | {{item.runTime}} min</h4>
+                    <span *ngFor="let category of item.category">{{category}} </span>
+                  </div>
+                </div>
+                <div class="movie_desc">
+                  <p class="text">
+                    {{item.description | slice: 0 : 100}}...
+                  </p>
+                </div>
+                <div class="movie_social">
+                  <ul>
+                    <li><i class="material-icons" (click)="remove(item)" appSaveMovie>delete</i></li>
+                    <li><i class="material-icons" [routerLink]="['/details', item.id]" appSaveMovie>more_vert</i></li>
+                  </ul>
+                </div>
+              </div>
+              <div class="blur_back" style="background: url('{{item.photo}}'); background-size: cover;"></div>
+            </div>
           </div>
-        </div>
-        <div class="movie_desc">
-          <p class="text">
-            {{item.description | slice: 0 : 100}}...
-          </p>
-        </div>
-        <div class="movie_social">
-          <ul >
-            <li><i class="material-icons" (click)="remove(item)" appSaveMovie>delete</i></li>
-            <li><i class="material-icons" [routerLink]="['/details', item.id]" appSaveMovie>more_vert</i></li>
-          </ul>
+          <h2 *ngIf="!activeUser.savedMovies.length">Your saved movies list is empty!</h2>
         </div>
       </div>
-      <div class="blur_back" style="background: url('{{item.photo}}'); background-size: cover;"></div>
     </div>
-</div>
+    <div class="col-3">
+      <div class="dash">
+        <img src="{{activeUser?.photo}}">
+        <i class="material-icons edit" (click)="toggleform = !toggleform">edit</i>
+        <h2 *ngIf="!toggleform">{{activeUser?.firstName}} {{activeUser?.lastName}}</h2>
+        <h4 *ngIf="!toggleform">{{activeUser?.email}}</h4>
+        <form [formGroup]="editUser" *ngIf="toggleform">
+          <mat-form-field appearance="outline" class="uploadPhoto">
+            <mat-label>Photo...</mat-label>
+            <input matInput formControlName="photo">
+          </mat-form-field>
+          <input type="file" formControlName="file" accept="image/*" formControlName="file"
+            (change)="getValue($event)"><br>
+          <mat-form-field appearance="outline">
+            <mat-label>First Name...</mat-label>
+            <input matInput formControlName="name">
+          </mat-form-field><br>
+          <mat-form-field appearance="outline">
+            <mat-label>Last Name...</mat-label>
+            <input matInput formControlName="lname">
+          </mat-form-field><br>
+          <button type="submit" class="btn btn-outline-secondary" [disabled]="!editUser.valid"
+            (click)="editTheUser()">Submit</button>
+        </form>
+      </div>
+    </div>
   </div>
-</div></div>
-<div class="col-3">
-  <div class="dash">
-  <img src="{{activeUser?.photo}}">
-  <i class="material-icons edit" (click)="toggleform = !toggleform">edit</i>
-  <h2 *ngIf="!toggleform">{{activeUser?.firstName}} {{activeUser?.lastName}}</h2>
-  <h4 *ngIf="!toggleform">{{activeUser?.email}}</h4>
-  <form [formGroup]="editUser" *ngIf="toggleform">
-  <mat-form-field appearance="outline" class="uploadPhoto">
-    <mat-label>Photo...</mat-label>
-    <input matInput formControlName="photo">
-  </mat-form-field>
-  <input type="file" formControlName="file" accept="image/*" formControlName="file" (change)="getValue($event)"><br>
-  <mat-form-field appearance="outline">
-    <mat-label>First Name...</mat-label>
-    <input matInput formControlName="name">
-  </mat-form-field><br>
-  <mat-form-field appearance="outline">
-    <mat-label>Last Name...</mat-label>
-    <input matInput formControlName="lname">
-  </mat-form-field><br>
-  <button type="submit" class="btn btn-outline-secondary" [disabled]="!editUser.valid" (click)="editTheUser()">Submit</button>
-</form>
-  </div>
-</div>
-</div>
 </div>
 <ng-template #spinner>
   <div class="loader"></div>

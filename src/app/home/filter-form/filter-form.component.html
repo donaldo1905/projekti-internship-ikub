@@ -1,36 +1,33 @@
-
-    <h2>Filter the movies:</h2>
-    <mat-form-field appearance="outline">
-      <mat-label>Categories</mat-label>
-      <mat-select [formControl]="categories">
-        <mat-option *ngFor="let category of categoriesOptions" [value]="category">{{category}}</mat-option>
-      </mat-select>
-    </mat-form-field>
+<h2>Filter the movies:</h2>
+<mat-form-field appearance="outline">
+  <mat-label>Categories</mat-label>
+  <mat-select [formControl]="categories">
+    <mat-option *ngFor="let category of categoriesOptions" [value]="category">{{category}}</mat-option>
+  </mat-select>
+</mat-form-field>
 <div class="year">
-    <h3><b>Year:</b></h3>
-    <h3>{{startYear.value}}</h3>
-    <mat-slider min="1940" max="2022">
-      <input matSliderStartThumb [formControl]="startYear">
-      <input matSliderEndThumb [formControl]="endYear">
-    </mat-slider>
-    <h3>{{endYear.value}}</h3>
-  </div>
-  <div class="year">
-    <h3><b>Duration: </b></h3>
-    <h3>{{startTime.value}}</h3>
-    <mat-slider min="0" max="300">
-      <input matSliderStartThumb [formControl]="startTime">
-      <input matSliderEndThumb [formControl]="endTime">
-    </mat-slider>
-    <h3>{{endTime.value}}</h3>
-  </div>
-  <br>
-  <h2>Search by name:</h2>
-  <mat-form-field appearance="outline">
-    <mat-label>Search...</mat-label>
-    <input matInput [formControl]="searchForm">
-  </mat-form-field>
-  <div *ngIf="finalFilter | async as items">
-  </div>
-
-
+  <h3><b>Year:</b></h3>
+  <h3>{{startYear.value}}</h3>
+  <mat-slider min="1940" max="2022">
+    <input matSliderStartThumb [formControl]="startYear">
+    <input matSliderEndThumb [formControl]="endYear">
+  </mat-slider>
+  <h3>{{endYear.value}}</h3>
+</div>
+<div class="year">
+  <h3><b>Duration: </b></h3>
+  <h3>{{startTime.value}}</h3>
+  <mat-slider min="0" max="300">
+    <input matSliderStartThumb [formControl]="startTime">
+    <input matSliderEndThumb [formControl]="endTime">
+  </mat-slider>
+  <h3>{{endTime.value}}</h3>
+</div>
+<br>
+<h2>Search by name:</h2>
+<mat-form-field appearance="outline">
+  <mat-label>Search...</mat-label>
+  <input matInput [formControl]="searchForm">
+</mat-form-field>
+<div *ngIf="finalFilter | async as items">
+</div>

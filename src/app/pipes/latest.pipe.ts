@@ -6,7 +6,7 @@ import { ItemModel } from '../core/interfaces/interfaces';
 })
 export class LatestPipe implements PipeTransform {
 
-  transform(value: ItemModel[], ...args: any[]):ItemModel[] {
+  transform(value: ItemModel[], ...args: any[]): ItemModel[] {
     return value.reverse();
   }
 

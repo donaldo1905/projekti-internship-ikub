@@ -34,37 +34,13 @@
   </div>
   <div class="filter">
     <app-filter-form></app-filter-form>
-</div>
+  </div>
 </div>
 <div class="container-fluid px-5 overflow-hidden" *ngIf="filteredItems | async as items">
+  
   <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xxl-3" *ngFor="let item of items">
-      <div class="movie_card h-100">
-        <div class="info_section">
-          <div class="movie_header">
-            <img class="locandina" src='{{item.photo}}' />
-            <div>
-              <h1>{{item.name}}</h1>
-              <h4>{{item.year}} | {{item.runTime}} min</h4>
-              <span *ngFor="let category of item.category">{{category}} </span>
-            </div>
-          </div>
-          <div class="movie_desc">
-            <p class="text">
-              {{item.description | slice: 0 : 100}}...
-            </p>
-          </div>
-          <div class="movie_social">
-            <ul>
-              <li *ngIf="!savedMovies.includes(item.id!)"><i class="material-icons" appSaveMovie (click)="addToSavedList(item)"></i></li>
-              <li *ngIf="savedMovies.includes(item.id!)"><i class="material-icons" style="font-size:x-large; color: black; cursor: pointer;" (click)="remove(item)"></i></li>
-              <li><i class="material-icons" appSaveMovie style="font-size:x-large;"
-                  [routerLink]="['/details', item.id]">more_vert</i></li>
-            </ul>
-          </div>
-        </div>
-        <div class="blur_back" style="background: url('{{item.photo}}'); background-size: cover;"></div>
-      </div>
+      <app-card [item]="item" [show]="savedMovies.includes(item.id!)" (emitItem)="addOrRemove($event, item)"></app-card>
     </div>
   </div>
 </div>

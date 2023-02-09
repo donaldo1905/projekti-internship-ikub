@@ -1,26 +1,39 @@
-
-  img{
-    top: 85px;
-    position: sticky;
-  }
-
-  @import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
-
-fieldset, label { margin: 0; padding: 0; }
-body{ margin: 20px; }
-h1 { font-size: 1.5em; margin: 10px}
-
-.col-8{
-top: auto;
+img {
+  top: 85px;
+  position: sticky;
 }
 
-.rating { 
+@import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
+
+fieldset,
+label {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 20px;
+}
+
+h1 {
+  font-size: 1.5em;
+  margin: 10px
+}
+
+.col-8 {
+  top: auto;
+}
+
+.rating {
   border: none;
   float: left;
 }
 
-.rating > input { display: none; } 
-.rating > label:before { 
+.rating>input {
+  display: none;
+}
+
+.rating>label:before {
   margin: 4px;
   font-size: 1.25em;
   font-family: FontAwesome;
@@ -28,36 +41,46 @@ top: auto;
   content: "\f005";
 }
 
-.rating > .half:before { 
+.rating>.half:before {
   content: "\f089";
   position: absolute;
 }
 
-.rating > label { 
-  color: #ddd; 
- float: right; 
+.rating>label {
+  color: #ddd;
+  float: right;
 }
 
-.rating > input:checked ~ label, /* show gold star when clicked */
-.rating:not(:checked) > label:hover, /* hover current star */
-.rating:not(:checked) > label:hover ~ label { color: #FFD700;  } /* hover previous stars in list */
+.rating>input:checked~label,
+/* show gold star when clicked */
+.rating:not(:checked)>label:hover,
+/* hover current star */
+.rating:not(:checked)>label:hover~label {
+  color: #FFD700;
+}
 
-.rating > input:checked + label:hover, /* hover current star when changing rating */
-.rating > input:checked ~ label:hover,
-.rating > label:hover ~ input:checked ~ label, /* lighten current selection */
-.rating > input:checked ~ label:hover ~ label { color: #FFED85;  } 
-  
+/* hover previous stars in list */
+
+.rating>input:checked+label:hover,
+/* hover current star when changing rating */
+.rating>input:checked~label:hover,
+.rating>label:hover~input:checked~label,
+/* lighten current selection */
+.rating>input:checked~label:hover~label {
+  color: #FFED85;
+}
+
 mat-form-field {
   display: flex;
   background-color: white !important;
 }
 
-::ng-deep .mat-form-field-appearance-outline.specific-border .mat-form-field-outline  {
+::ng-deep .mat-form-field-appearance-outline.specific-border .mat-form-field-outline {
   background-color: white !important;
-  border-radius: 5px;  
+  border-radius: 5px;
 }
 
-button{
+button {
   float: right;
   margin: .5rem;
 }
@@ -72,72 +95,82 @@ button{
   align-items: center;
 }
 
-.comments > * {
+.comments>* {
   margin: 0 10px;
 }
 
-.comments > i {
+.comments>i {
   position: absolute;
   right: 0%;
 }
 
 @media screen and (max-width: 1084px) {
-iframe{
-  width: 400px;
-  height: 305px;
-}
-.col-5{
-padding-right: 0;
-}
-fieldset{
-margin: 0 -20px
-}
+  iframe {
+    width: 400px;
+    height: 305px;
+  }
+
+  .col-5 {
+    padding-right: 0;
+  }
+
+  fieldset {
+    margin: 0 -20px
+  }
 }
 
 @media screen and (max-width: 900px) {
-.over{
-  display: block;
-  text-align: -webkit-center;
-}
-.col-5{
-width: 50%;
-}
-iframe{
-  transform: translate(-20%);
-}
+  .over {
+    display: block;
+    text-align: -webkit-center;
   }
 
-  @media screen and (max-width: 753px) {
-    .row{
-      display:block;
-      text-align: -webkit-center;
-    }
-    .rating{
-      width: max-content;
-    }
-    iframe{
-      width: 370px;
-      height: 290px;
-    }
- .col-4{
-  display: none;
- }
-      }
+  .col-5 {
+    width: 50%;
+  }
 
-      @media screen and (max-width: 548px) {
-        .col-5{
-        width: 100%;
-        }
-        iframe{
-          width: 370px;
-          height: 290px;
-          transform: translate(-20%);
-        }
-        .img-div{
-          display: none;
-        }
-        .row{
-          display:block;
-          text-align: -webkit-center;
-        }
-          }
+  iframe {
+    transform: translate(-20%);
+  }
+}
+
+@media screen and (max-width: 753px) {
+  .row {
+    display: block;
+    text-align: -webkit-center;
+  }
+
+  .rating {
+    width: max-content;
+  }
+
+  iframe {
+    width: 370px;
+    height: 290px;
+  }
+
+  .col-4 {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 548px) {
+  .col-5 {
+    width: 100%;
+  }
+
+  iframe {
+    width: 370px;
+    height: 290px;
+    transform: translate(-20%);
+  }
+
+  .img-div {
+    display: none;
+  }
+
+  .row {
+    display: block;
+    text-align: -webkit-center;
+  }
+}

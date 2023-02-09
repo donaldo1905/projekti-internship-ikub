@@ -1,23 +1,23 @@
-import { Directive, ElementRef, HostListener, Input, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, HostListener, Renderer2 } from '@angular/core';
 
 @Directive({
   selector: '[appSaveMovie]'
 })
 export class SaveMovieDirective {
 
-  constructor(private el: ElementRef, private renderer: Renderer2) { 
-renderer.setStyle(this.el.nativeElement, 'font-size', 'x-large')
-renderer.setStyle(this.el.nativeElement, 'color', 'rgba(0, 0, 0, 0.3)')
-renderer.setStyle(this.el.nativeElement, 'display', 'inline-block')
+  constructor(private el: ElementRef, private renderer: Renderer2) {
+    renderer.setStyle(this.el.nativeElement, 'font-size', 'x-large')
+    renderer.setStyle(this.el.nativeElement, 'color', 'rgba(0, 0, 0, 0.3)')
+    renderer.setStyle(this.el.nativeElement, 'display', 'inline-block')
   }
 
-  @HostListener('mouseenter') onMouseOver(){
+  @HostListener('mouseenter') onMouseOver() {
     this.renderer.setStyle(this.el.nativeElement, 'color', 'rgba(0,0,0,0.7)')
     this.renderer.setStyle(this.el.nativeElement, 'transition', 'color 0.3s')
     this.renderer.setStyle(this.el.nativeElement, 'cursor', 'pointer')
   }
 
-  @HostListener('mouseleave') onMouseLeave(){
+  @HostListener('mouseleave') onMouseLeave() {
     this.renderer.setStyle(this.el.nativeElement, 'font-size', 'x-large')
     this.renderer.setStyle(this.el.nativeElement, 'color', 'rgba(0, 0, 0, 0.3)')
   }

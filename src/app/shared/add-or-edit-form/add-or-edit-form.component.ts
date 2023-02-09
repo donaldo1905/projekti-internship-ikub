@@ -23,15 +23,14 @@ export class AddOrEditFormComponent implements OnInit {
     if (item !== null) {
       this.addoredit = this.setForm(item);
       this.id = item.id!
-    }else {
+    } else {
       this.addoredit = this.setForm(null);
     }
   }
-  
+
   @Output() onClose: EventEmitter<boolean> = new EventEmitter();
   constructor(private itemsService: ItemsService, private fb: FormBuilder, private router: Router, private authService: AuthService, private toastr: ToastrService) { }
   ngOnInit(): void {
-    this.setForm(null)
   }
 
   setForm(item: ItemModel | null) {
@@ -69,12 +68,12 @@ export class AddOrEditFormComponent implements OnInit {
       })
       return tempDoc
     })).subscribe(res => {
-      if(this.id){
+      if (this.id) {
         this.itemsService.editItem(this.id, edittedMovie).subscribe()
         this.toastr.info(`Movie with id:${this.id} was edited.`, 'Success', { positionClass: 'toast-top-center' })
         this.itemsService.itemToAdd.next(edittedMovie)
         this.closeModal()
-      }else{
+      } else {
         this.itemsService.createItem(edittedMovie).subscribe(res => {
           edittedMovie.id = res.name
           this.itemsService.itemToAdd?.next(edittedMovie)
