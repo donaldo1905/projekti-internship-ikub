@@ -15,10 +15,11 @@
       </div>
       <div class="movie_social">
         <ul>
-          <li *ngIf="!show"><i class="material-icons" appSaveMovie
+          <li *ngIf="!show && !removeIcon"><i class="material-icons" appSaveMovie
               (click)="addToRemove('add')"></i></li>
-          <li *ngIf="show"><i class="material-icons"
+          <li *ngIf="show && !removeIcon"><i class="material-icons"
               style="font-size:x-large; color: black; cursor: pointer;" (click)="addToRemove('remove')"></i></li>
+              <li *ngIf="removeIcon"><i class="material-icons" (click)="addToRemove('remove')" appSaveMovie>delete</i></li>
           <li><i class="material-icons" appSaveMovie style="font-size:x-large;"
               [routerLink]="['/details', item.id]">more_vert</i></li>
         </ul>

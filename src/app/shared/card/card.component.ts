@@ -9,6 +9,7 @@ import { ItemModel } from 'src/app/core/interfaces/interfaces';
 export class CardComponent {
   @Input() item!: ItemModel;
   @Input() show!: boolean;
+  @Input() removeIcon!: boolean
   @Output() emitItem: EventEmitter<string>= new EventEmitter<string>()
 constructor(){}
 

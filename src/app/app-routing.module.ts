@@ -7,7 +7,7 @@ import { DetailedPageComponent } from './detailed-page/detailed-page.component';
 import { HomeComponent } from './home/home.component';
 import { LayoutComponent } from './layout/layout.component';
 import { LoginFormComponent } from './login-form/login-form.component';
-import { SavedMoviesComponent } from './saved-movies/saved-movies.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 import { AddOrEditFormComponent } from './shared/add-or-edit-form/add-or-edit-form.component';
 import { NotFoundComponent } from './shared/not-found/not-found.component';
 
@@ -18,7 +18,7 @@ const routes: Routes = [
     path: '', component: LayoutComponent, children: [
       { path: 'home', component: HomeComponent , canActivate: [HomeGuardGuard]},
       { path: 'details/:id', component: DetailedPageComponent },
-      { path: 'savedmovies', component: SavedMoviesComponent },
+      { path: 'userprofile', component: UserProfileComponent },
         {
     path: 'admin', component: AdminPageComponent, canActivate: [AdminGuardGuard], children: [
       {

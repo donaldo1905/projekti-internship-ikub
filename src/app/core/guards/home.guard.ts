@@ -11,7 +11,7 @@ export class HomeGuardGuard implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if (this.auth.getId()) {
+    if (localStorage.getItem('token')) {
       return true;
     }
     this.router.navigate(['/login'])

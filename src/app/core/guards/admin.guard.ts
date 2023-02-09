@@ -12,7 +12,7 @@ export class AdminGuardGuard implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): boolean | Observable<boolean | UrlTree> | Promise<boolean> {
-    if (!localStorage.getItem('id')) {
+    if (!localStorage.getItem('token')) {
       this.router.navigate(['/login'])
       return false
     } else

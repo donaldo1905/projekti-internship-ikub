@@ -11,6 +11,16 @@ body {
   font-weight: 400;
 }
 
+h2{
+  margin-top: 5rem;
+  animation: noMovies 2.5s forwards; 
+}
+
+@keyframes noMovies {
+  0% {transform: translateY(-100%);}
+  100% {transform: translateY(0%);}
+}
+
 .col-xs-12,
 .col-sm-12,
 .col-md-6,
@@ -18,104 +28,6 @@ body {
 .col-xxl-3 {
   padding: 20px 10px;
   text-align: -webkit-center;
-}
-
-.movie_card {
-  position: relative;
-  min-width: 290px;
-  max-width: 400px;
-  border-radius: 10px;
-  transition: all 0.4s;
-  box-shadow: 0px 15px 15px 0px rgb(171, 171, 171);
-
-  &:hover {
-    transform: scale(1.02);
-    transition: all 0.4s;
-  }
-
-  .info_section {
-    position: relative;
-    max-width: 100%;
-    height: 100%;
-    z-index: 2;
-    border-radius: 10px;
-    background: linear-gradient(to top, #ffffff 35%, transparent 100%);
-    display: inline-grid;
-
-    .movie_header {
-      display: flex;
-      justify-content: flex-start;
-      padding: 25px;
-      height: 40%;
-      width: 100%;
-      margin-top: 85px;
-
-      h1 {
-        color: black;
-        font-weight: 400;
-      }
-
-      h4 {
-        color: #555;
-        font-weight: 400;
-      }
-
-      .minutes {
-        display: inline-block;
-        margin-top: 15px;
-        color: #555;
-        padding: 5px;
-        border-radius: 5px;
-        border: 1px solid rgba(0, 0, 0, 0.05);
-      }
-
-      .type {
-        display: inline-block;
-        margin-left: 10px;
-      }
-
-      .locandina {
-        margin-right: 20px;
-        height: 140px;
-        width: 100px;
-      }
-    }
-
-    .movie_desc {
-      padding: 25px;
-      height: 50%;
-      width: 100%;
-    }
-
-    .movie_social {
-      height: 10%;
-      padding-left: 15px;
-      padding-bottom: 20px;
-
-      ul {
-        list-style: none;
-        padding: 0;
-
-        li {
-          display: inline-block;
-          margin: 0 10px;
-        }
-      }
-    }
-  }
-
-  .blur_back {
-    position: absolute;
-    top: 0;
-    z-index: 1;
-    height: 100%;
-    right: 0;
-    background-size: cover;
-    border-radius: 11px;
-    background-color: white;
-    width: 100%;
-    background-position: 50% 50% !important;
-  }
 }
 
 .movie_card_slider {
@@ -237,33 +149,11 @@ h3 {
   justify-content: center;
 }
 
-mat-slider {
-  width: 80%;
-}
-
-.year {
-  display: flex;
-  justify-content: space-between;
-  place-items: center;
-}
-
 .filter {
   padding: 75px 0;
   width: 300px;
 }
 
-::ng-deep .cdk-overlay-container {
-  z-index: 9999;
-}
-
-.modal-dialog {
-  margin: 5% auto !important;
-}
-
-mat-form-field {
-  display: block;
-  padding-top: 0;
-}
 
 .modal-title {
   margin: 0

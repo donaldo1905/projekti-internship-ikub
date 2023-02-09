@@ -15,7 +15,6 @@ export class AuthService {
   login(email: string, password: string) {
     this.fireAuth.signInWithEmailAndPassword(email, password).then((res) => {
       if (res.user?.emailVerified) {
-        localStorage.setItem('id', 'user logged in')//todo
         res.user?.getIdToken().then(token => {
           localStorage.setItem('token', token)
         })

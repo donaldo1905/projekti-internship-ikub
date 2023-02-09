@@ -7,10 +7,10 @@ import { ItemModel, User } from '../core/interfaces/interfaces';
 
 @Component({
   selector: 'app-saved-movies',
-  templateUrl: './saved-movies.component.html',
-  styleUrls: ['./saved-movies.component.scss']
+  templateUrl: './user-profile.component.html',
+  styleUrls: ['./user-profile.component.scss']
 })
-export class SavedMoviesComponent implements OnInit {
+export class UserProfileComponent implements OnInit {
   activeUser?: User;
   editUser!: FormGroup
   toggleform: boolean = false
@@ -45,6 +45,10 @@ export class SavedMoviesComponent implements OnInit {
         this.toastr.error(`${item.name} was removed from your save list!`, 'Movie Removed', { positionClass: 'toast-top-center' })
       }
     }
+  }
+
+  getRemove(event: string, item: ItemModel){
+    event === 'remove' ? this.remove(item) : null
   }
 
   editTheUser() {

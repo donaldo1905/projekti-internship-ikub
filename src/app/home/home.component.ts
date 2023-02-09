@@ -19,7 +19,6 @@ export class HomeComponent implements OnInit {
   constructor(private authService: AuthService, private itemsService: ItemsService, private toastr: ToastrService) { }
 
   ngOnInit(): void {
-    this.getAllItems()
     this.getAvtiveUser()
   }
 
@@ -34,21 +33,8 @@ export class HomeComponent implements OnInit {
     })
   }
 
-  getAllItems() {
-    this.itemsService.getItems().pipe(map((res: any) => {
-      const movies = []
-      for (const key in res) {
-        if (res.hasOwnProperty(key)) {
-          movies.push({ ...res[key], id: key })
-        }
-      }
-      return movies
-    })).subscribe((res) => {
-      this.items = res;
-    })
-  }
-
   filteredItems: Observable<ItemModel[]> = this.itemsService.filteredItems.pipe(map(items => {
+    this.items = items
     return items ?? this.items;
   }
   ))

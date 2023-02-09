@@ -8,7 +8,7 @@ import { LoginFormComponent } from './login-form/login-form.component';
 import {MatButtonModule} from  '@angular/material/button';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import {MatInputModule} from  '@angular/material/input';
-import {MatCardModule} from  '@angular/material/card';
+import {MatCardModule} from  '@angular/material/card'; 
 import {MatSliderModule} from  '@angular/material/slider';
 import {MatIconModule} from '@angular/material/icon'
 import { HomeComponent } from './home/home.component';
@@ -20,7 +20,7 @@ import { LatestPipe } from './pipes/latest.pipe';
 import { AddOrEditFormComponent } from './shared/add-or-edit-form/add-or-edit-form.component';
 import { DetailedPageComponent } from './detailed-page/detailed-page.component';
 import { SafePipe } from './pipes/safe-pipe.pipe';
-import { SavedMoviesComponent } from './saved-movies/saved-movies.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 import { AdminPageComponent } from './admin-page/admin-page.component';
 import { MatTableModule } from '@angular/material/table';
 import { NotFoundComponent } from './shared/not-found/not-found.component';
@@ -42,7 +42,7 @@ import { CardComponent } from './shared/card/card.component';
     AddOrEditFormComponent,
     DetailedPageComponent,
     SafePipe,
-    SavedMoviesComponent,
+    UserProfileComponent,
     AdminPageComponent,
     NotFoundComponent,
     NavbarComponent,
