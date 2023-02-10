@@ -36,9 +36,9 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   filteredItems: Observable<ItemModel[]> = this.itemsService.filteredItems.pipe(takeUntil(this.unsubscribe$),map(items => {
     this.items = items
-    return items;
+    return items; 
   }
-  ))
+  )) 
 
   addToSavedList(item: ItemModel) {
     if (!this.activeUser?.savedMovies) {

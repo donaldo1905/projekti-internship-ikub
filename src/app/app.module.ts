@@ -17,7 +17,7 @@ import {  HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptorService } from './core/authentication/auth-interceptor.service';
 import {MatSelectModule} from '@angular/material/select';
 import { LatestPipe } from './shared/pipes/latest.pipe';
-import { AddOrEditFormComponent } from './shared/add-or-edit-form/add-or-edit-form.component';
+import { AddOrEditFormComponent } from './shared/components/add-or-edit-form/add-or-edit-form.component';
 import { DetailedPageComponent } from './home/detailed-page/detailed-page.component';
 import { SafePipe } from './shared/pipes/safe-pipe.pipe';
 import { UserProfileComponent } from './user-profile/user-profile.component';
@@ -31,7 +31,7 @@ import { LayoutComponent } from './layout/layout.component';
 import { SaveMovieDirective } from './shared/directives/save-movie.directive';
 import { CommonModule } from '@angular/common';
 import { FilterFormComponent } from './home/filter-form/filter-form.component';
-import { CardComponent } from './shared/card/card.component';
+import { CardComponent } from './shared/components/card/card.component';
 import { AdminPageModule } from "./admin-page/admin-page.module";
 import { MatDialogModule } from '@angular/material/dialog';
 
