@@ -1,6 +1,5 @@
 <div class="container-fluid flex-display">
-  <h2 *ngIf="!items.length">There aren't any movies that match this description!</h2>
-  <div *ngIf="items.length" id="carouselExampleCaptions" class="carousel carousel-fade" data-bs-ride="carousel">
+  <div id="carouselExampleCaptions" class="carousel carousel-fade" data-bs-ride="carousel">
     <div class="carousel-inner d-flex">
       <div class="carousel-item" *ngFor="let item of items | latest | slice: 0 : 3; let i = index"
         [ngClass]="i==0 ? 'carousel-item active': 'carousel-item'" data-bs-interval="2500">
