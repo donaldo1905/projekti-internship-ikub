@@ -16,10 +16,10 @@ import { AngularFireModule } from '@angular/fire/compat';
 import {  HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptorService } from './core/authentication/auth-interceptor.service';
 import {MatSelectModule} from '@angular/material/select';
-import { LatestPipe } from './pipes/latest.pipe';
+import { LatestPipe } from './shared/pipes/latest.pipe';
 import { AddOrEditFormComponent } from './shared/add-or-edit-form/add-or-edit-form.component';
 import { DetailedPageComponent } from './detailed-page/detailed-page.component';
-import { SafePipe } from './pipes/safe-pipe.pipe';
+import { SafePipe } from './shared/pipes/safe-pipe.pipe';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { AdminPageComponent } from './admin-page/admin-page.component';
 import { MatTableModule } from '@angular/material/table';
@@ -32,47 +32,51 @@ import { SaveMovieDirective } from './directives/save-movie.directive';
 import { CommonModule } from '@angular/common';
 import { FilterFormComponent } from './home/filter-form/filter-form.component';
 import { CardComponent } from './shared/card/card.component';
+import { AdminPageModule } from "./admin-page/admin-page.module";
+import { MatDialogModule } from '@angular/material/dialog';
+
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    LoginFormComponent,
-    HomeComponent,
-    LatestPipe,
-    AddOrEditFormComponent,
-    DetailedPageComponent,
-    SafePipe,
-    UserProfileComponent,
-    AdminPageComponent,
-    NotFoundComponent,
-    NavbarComponent,
-    LayoutComponent,
-    SaveMovieDirective,
-    FilterFormComponent,
-    CardComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    MatButtonModule,
-    MatSliderModule,
-    MatSlideToggleModule,
-    MatCardModule,
-    MatInputModule,
-    MatButtonModule,
-    ReactiveFormsModule,
-    BrowserAnimationsModule,
-    HttpClientModule,
-    MatTableModule,
-    MatIconModule,
-    MatSelectModule,
-    CommonModule,
-    ToastrModule.forRoot(),
-    AngularFireModule.initializeApp(environment.firebase)
-
-  ],
-  providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true}],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        LoginFormComponent,
+        HomeComponent,
+        LatestPipe,
+        AddOrEditFormComponent,
+        DetailedPageComponent,
+        SafePipe,
+        UserProfileComponent,
+        AdminPageComponent,
+        NotFoundComponent,
+        NavbarComponent,
+        LayoutComponent,
+        SaveMovieDirective,
+        FilterFormComponent,
+        CardComponent
+    ],
+    providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true }],
+    bootstrap: [AppComponent],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        MatButtonModule,
+        MatSliderModule,
+        MatSlideToggleModule,
+        MatCardModule,
+        MatDialogModule,
+        MatInputModule,
+        MatButtonModule,
+        ReactiveFormsModule,
+        BrowserAnimationsModule,
+        HttpClientModule,
+        MatTableModule,
+        MatIconModule,
+        MatSelectModule,
+        CommonModule,
+        ToastrModule.forRoot(),
+        AngularFireModule.initializeApp(environment.firebase),
+        AdminPageModule
+    ]
 })
 export class AppModule { }
  

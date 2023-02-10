@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { ItemModel } from '../core/interfaces/interfaces';
+import { ItemModel } from '../../core/interfaces/interfaces';
 
 @Pipe({
   name: 'latest'

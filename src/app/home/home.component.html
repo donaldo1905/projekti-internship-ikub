@@ -37,7 +37,7 @@
   </div>
 </div>
 <div class="container-fluid px-5 overflow-hidden" *ngIf="filteredItems | async as items">
-  
+
   <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xxl-3" *ngFor="let item of items">
       <app-card [item]="item" [show]="savedMovies.includes(item.id!)" (emitItem)="addOrRemove($event, item)"></app-card>

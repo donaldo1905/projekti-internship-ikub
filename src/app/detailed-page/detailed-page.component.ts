@@ -63,10 +63,6 @@ export class DetailedPageComponent implements OnInit {
     window.scrollTo(0, 0)
   }
 
-  logout(): void {
-    this.authService.signOut()
-  }
-
   ratingMethod(name: any,) {
     let replace = false
     this.sum = 0

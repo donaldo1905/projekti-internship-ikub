@@ -11,14 +11,19 @@ body {
   font-weight: 400;
 }
 
-h2{
+h2 {
   margin-top: 5rem;
-  animation: noMovies 2.5s forwards; 
+  animation: noMovies 2.5s forwards;
 }
 
 @keyframes noMovies {
-  0% {transform: translateY(-100%);}
-  100% {transform: translateY(0%);}
+  0% {
+    transform: translateY(-100%);
+  }
+
+  100% {
+    transform: translateY(0%);
+  }
 }
 
 .col-xs-12,

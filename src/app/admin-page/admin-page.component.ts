@@ -5,6 +5,8 @@ import { map } from 'rxjs';
 import { AuthService } from '../core/authentication/auth.service';
 import { ItemModel, User } from '../core/interfaces/interfaces';
 import { ItemsService } from '../core/services/items.service';
+import { MatDialog } from '@angular/material/dialog'
+import { ConfirmDeleteComponent } from './confirm-delete/confirm-delete.component';
 
 @Component({
   selector: 'app-admin-page',
@@ -20,7 +22,7 @@ export class AdminPageComponent implements OnInit {
   add: boolean = false
   toggle: boolean = false
   item!: ItemModel
-  constructor(private itemsService: ItemsService, private authService: AuthService, private toastr: ToastrService) { }
+  constructor(private itemsService: ItemsService, private authService: AuthService, private toastr: ToastrService, private dialog: MatDialog) { }
   ngOnInit(): void {
     this.getAllUsers()
     this.getAllItems()
@@ -75,22 +77,26 @@ export class AdminPageComponent implements OnInit {
   }
 
   deleteItem(item: ItemModel) {
-
-    if (window.confirm('Are you sure you want to delete this item?')) {//todo
-      this.itemsService.delete(item).subscribe()
-      for (let user of this.dataSource.data) {
-        if (user.savedMovies) {
-          for (let i = 0; i < user.savedMovies.length; i++) {
-            if (user.savedMovies[i].id === item.id)
-              user.savedMovies.splice(i, 1)
-            this.authService.getUser(user.uid).update({ savedMovies: user.savedMovies })
+    this.dialog.open(ConfirmDeleteComponent, {
+      width: '390px',
+      disableClose: true
+    }).afterClosed().subscribe(res => {
+      if (res) {
+        this.itemsService.delete(item).subscribe()
+        for (let user of this.dataSource.data) {
+          if (user.savedMovies) {
+            for (let i = 0; i < user.savedMovies.length; i++) {
+              if (user.savedMovies[i].id === item.id)
+                user.savedMovies.splice(i, 1)
+              this.authService.getUser(user.uid).update({ savedMovies: user.savedMovies })
+            }
           }
         }
+        this.toastr.error(`${item.name} was deleted.`, 'Movie Deleted!', { positionClass: 'toast-top-center' })
+        this.itemsSource.data.splice(this.itemsSource.data.indexOf(item), 1)
+        this.itemsSource._updateChangeSubscription()
       }
-      this.toastr.error(`${item.name} was deleted.`, 'Movie Deleted!', { positionClass: 'toast-top-center' })
-      this.itemsSource.data.splice(this.itemsSource.data.indexOf(item), 1)
-      this.itemsSource._updateChangeSubscription()
-    }
+    })
   }
 
   applyItemFilter(event: Event) {
@@ -101,10 +107,6 @@ export class AdminPageComponent implements OnInit {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
-
-  logout(): void {
-    this.authService.signOut()
   }
 
   modalClosed(toggle: boolean) {

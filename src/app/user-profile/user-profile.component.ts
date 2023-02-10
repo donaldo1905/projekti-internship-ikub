@@ -47,7 +47,7 @@ export class UserProfileComponent implements OnInit {
     }
   }
 
-  getRemove(event: string, item: ItemModel){
+  getRemove(event: string, item: ItemModel) {
     event === 'remove' ? this.remove(item) : null
   }
 

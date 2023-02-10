@@ -1,6 +1,11 @@
 img {
   top: 85px;
   position: sticky;
+  width: 95%;
+}
+
+.row {
+  --bs-gutter-x: 0
 }
 
 @import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);

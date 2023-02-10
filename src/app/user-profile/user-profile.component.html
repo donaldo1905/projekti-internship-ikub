@@ -5,10 +5,10 @@
         <div class="row" *ngIf="activeUser; else spinner">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xxl-4" *ngFor="let item of activeUser?.savedMovies">
             <app-card [item]="item" [show]="false" [removeIcon]="true" (emitItem)="getRemove($event, item)"></app-card>
-            </div>
           </div>
         </div>
       </div>
+    </div>
     <div class="col-3">
       <div class="dash">
         <img src="{{activeUser?.photo}}">
