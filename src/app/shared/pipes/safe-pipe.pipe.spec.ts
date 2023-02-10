@@ -1,8 +1,8 @@
-import { SafePipePipe } from './safe-pipe.pipe';
+import { SafePipe } from './safe-pipe.pipe';
 
 describe('SafePipePipe', () => {
   it('create an instance', () => {
-    const pipe = new SafePipePipe();
+    const pipe = new SafePipe();
     expect(pipe).toBeTruthy();
   });
 });

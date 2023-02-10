@@ -1,4 +1,5 @@
 img {
+  padding-left: 10px;
   top: 85px;
   position: sticky;
   width: 95%;
@@ -6,6 +7,12 @@ img {
 
 .row {
   --bs-gutter-x: 0
+}
+
+.go_back {
+  position: fixed;
+  top: 77px;
+  left: 2px;
 }
 
 @import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
@@ -107,6 +114,13 @@ button {
 .comments>i {
   position: absolute;
   right: 0%;
+}
+
+.turn_back_button {
+  position: absolute;
+  z-index: 999;
+  top: 20%;
+  left: 5%;
 }
 
 @media screen and (max-width: 1084px) {

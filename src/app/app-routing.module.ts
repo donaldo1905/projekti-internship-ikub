@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminGuardGuard } from './core/guards/admin.guard';
 import { HomeGuardGuard } from './core/guards/home.guard';
 import { LayoutComponent } from './layout/layout.component';
-import { LoginFormComponent } from './login-form/login-form.component';
+import { LoginFormComponent } from './core/authentication/login-form/login-form.component';
 import { NotFoundComponent } from './shared/not-found/not-found.component';
 
 const routes: Routes = [
@@ -14,11 +14,6 @@ const routes: Routes = [
       {
         path: 'home',
         loadChildren: () => import('./home/home.module').then(m => m.HomeModule),
-        canActivate: [HomeGuardGuard]
-      },
-      {
-        path: 'details/:id',
-        loadChildren: () => import('./detailed-page/detailed-page.module').then(m => m.DetailedPageModule),
         canActivate: [HomeGuardGuard]
       },
       {

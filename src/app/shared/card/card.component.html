@@ -21,7 +21,7 @@
               style="font-size:x-large; color: black; cursor: pointer;" (click)="addToRemove('remove')"></i></li>
               <li *ngIf="removeIcon"><i class="material-icons" (click)="addToRemove('remove')" appSaveMovie>delete</i></li>
           <li><i class="material-icons" appSaveMovie style="font-size:x-large;"
-              [routerLink]="['/details', item.id]">more_vert</i></li>
+              [routerLink]="['details', item.id]">more_vert</i></li>
         </ul>
       </div>
     </div>

@@ -41,7 +41,7 @@ export class FilterFormComponent implements OnInit, OnDestroy {
     })
   }
 
-  filteredMovies: Observable<ItemModel[]> = this.searchForm?.valueChanges.pipe(takeUntil(this.unsubscribe$),startWith(''), debounceTime(200),
+  filteredMovies: Observable<ItemModel[]> = this.searchForm?.valueChanges.pipe(takeUntil(this.unsubscribe$),startWith(''), debounceTime(300),
     switchMap(searchValue => {
       return of(this.items).
         pipe(map(movies => {
@@ -50,7 +50,7 @@ export class FilterFormComponent implements OnInit, OnDestroy {
     }))
 
 
-  filteredByStartYear: Observable<ItemModel[]> = this.startYear?.valueChanges.pipe(takeUntil(this.unsubscribe$),distinctUntilChanged(), startWith(1970), debounceTime(200),
+  filteredByStartYear: Observable<ItemModel[]> = this.startYear?.valueChanges.pipe(takeUntil(this.unsubscribe$),distinctUntilChanged(), startWith(1970), debounceTime(300),
     switchMap(searchValue => {
       return this.filteredMovies.
         pipe(map(movies => {
@@ -61,7 +61,7 @@ export class FilterFormComponent implements OnInit, OnDestroy {
         }))
     }))
 
-  filteredByEndYear: Observable<ItemModel[]> = this.endYear?.valueChanges.pipe(takeUntil(this.unsubscribe$),distinctUntilChanged(), startWith(2022), debounceTime(200),
+  filteredByEndYear: Observable<ItemModel[]> = this.endYear?.valueChanges.pipe(takeUntil(this.unsubscribe$),distinctUntilChanged(), startWith(2022), debounceTime(300),
     switchMap(searchValue => {
       return this.filteredByStartYear.
         pipe(map(movies => {
@@ -69,7 +69,7 @@ export class FilterFormComponent implements OnInit, OnDestroy {
         }))
     }))
 
-  filteredByStartTime: Observable<ItemModel[]> = this.startTime?.valueChanges.pipe(takeUntil(this.unsubscribe$),distinctUntilChanged(), startWith(100), debounceTime(200),
+  filteredByStartTime: Observable<ItemModel[]> = this.startTime?.valueChanges.pipe(takeUntil(this.unsubscribe$),distinctUntilChanged(), startWith(100), debounceTime(300),
     switchMap(searchValue => {
       return this.filteredByEndYear.
         pipe(map(movies => {
@@ -77,7 +77,7 @@ export class FilterFormComponent implements OnInit, OnDestroy {
         }))
     }))
 
-  filteredByEndTime: Observable<ItemModel[]> = this.endTime?.valueChanges.pipe(takeUntil(this.unsubscribe$),distinctUntilChanged(), startWith(300), debounceTime(200),
+  filteredByEndTime: Observable<ItemModel[]> = this.endTime?.valueChanges.pipe(takeUntil(this.unsubscribe$),distinctUntilChanged(), startWith(300), debounceTime(300),
     switchMap(searchValue => {
       return this.filteredByStartTime.
         pipe(map(movies => {
@@ -85,7 +85,7 @@ export class FilterFormComponent implements OnInit, OnDestroy {
         }))
     }))
 
-  finalFilter: Observable<ItemModel[]> = this.categories?.valueChanges.pipe(takeUntil(this.unsubscribe$),takeUntil(this.unsubscribe$),distinctUntilChanged(), startWith(''), debounceTime(200),
+  finalFilter: Observable<ItemModel[]> = this.categories?.valueChanges.pipe(takeUntil(this.unsubscribe$),takeUntil(this.unsubscribe$),distinctUntilChanged(), startWith(''), debounceTime(300),
     switchMap(searchValue => {
       if (searchValue) {
         return this.filteredByEndTime.

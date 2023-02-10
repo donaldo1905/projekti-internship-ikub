@@ -3,9 +3,9 @@ import { FormControl, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
-import { AuthService } from '../core/authentication/auth.service';
-import { ItemModel } from '../core/interfaces/interfaces';
-import { ItemsService } from '../core/services/items.service';
+import { AuthService } from '../../core/authentication/auth.service';
+import { ItemModel } from '../../core/interfaces/interfaces';
+import { ItemsService } from '../../core/services/items.service';
 
 @Component({
   selector: 'app-detailed-page',

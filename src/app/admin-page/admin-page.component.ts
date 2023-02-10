@@ -80,7 +80,7 @@ export class AdminPageComponent implements OnInit, OnDestroy {
 
   deleteItem(item: ItemModel) {
     this.dialog.open(ConfirmDeleteComponent, {
-      width: '390px',
+      width: '300px',
       disableClose: true
     }).afterClosed().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       if (res) {
