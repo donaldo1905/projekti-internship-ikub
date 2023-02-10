@@ -17,8 +17,9 @@ export class AuthService {
       if (res.user?.emailVerified) {
         res.user?.getIdToken().then(token => {
           localStorage.setItem('token', token)
+          this.router.navigate(['/home'])
         })
-        this.router.navigate(['/home'])
+        
       }
       else {
         this.toastr.error('Please verify your email!', 'Error!', { positionClass: 'toast-top-center' })

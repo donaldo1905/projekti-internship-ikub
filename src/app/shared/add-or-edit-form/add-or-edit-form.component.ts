@@ -1,8 +1,8 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { map } from 'rxjs';
+import { map, Subject, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/core/authentication/auth.service';
 import { ItemModel } from 'src/app/core/interfaces/interfaces';
 import { ItemsService } from 'src/app/core/services/items.service';
@@ -12,11 +12,12 @@ import { ItemsService } from 'src/app/core/services/items.service';
   templateUrl: './add-or-edit-form.component.html',
   styleUrls: ['./add-or-edit-form.component.scss']
 })
-export class AddOrEditFormComponent implements OnInit {
+export class AddOrEditFormComponent implements OnInit, OnDestroy {
   categoryList: string[] = ['Action', 'Comedy', 'Drama', 'Crime', 'Fantasy', 'Adventure', 'Sci-Fi', 'Horror', 'Thriller', 'Historic', 'Epic'];
   addoredit: FormGroup = new FormGroup({})
   fileValue!: string;
   id!: string
+  private unsubscribe$: Subject<void> = new Subject<void>()
   @Output() sendAdd: EventEmitter<boolean> = new EventEmitter()
   @Input()
   set item(item: ItemModel) {
@@ -61,7 +62,7 @@ export class AddOrEditFormComponent implements OnInit {
       category: this.addoredit.get('categories')?.value,
       year: this.addoredit.get('year')?.value
     }
-    this.authService.getUsers().pipe(map((res: any) => {
+    this.authService.getUsers().pipe(takeUntil(this.unsubscribe$),map((res: any) => {
       const tempDoc: any[] = []
       res.forEach((doc: any) => {
         tempDoc.push({ id: doc.id, ...doc.data() })
@@ -74,7 +75,7 @@ export class AddOrEditFormComponent implements OnInit {
         this.itemsService.itemToAdd.next(edittedMovie)
         this.closeModal()
       } else {
-        this.itemsService.createItem(edittedMovie).subscribe(res => {
+        this.itemsService.createItem(edittedMovie).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
           edittedMovie.id = res.name
           this.itemsService.itemToAdd?.next(edittedMovie)
           this.toastr.info(`${this.addoredit.get('name')?.value} was added.`, 'Success', { positionClass: 'toast-top-center' })
@@ -116,5 +117,9 @@ export class AddOrEditFormComponent implements OnInit {
     this.onClose.emit(true);
   }
 
+  ngOnDestroy(): void {
+    this.unsubscribe$.next()
+    this.unsubscribe$.complete()
+  }
 }
 

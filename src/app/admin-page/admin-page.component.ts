@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
-import { map } from 'rxjs';
+import { map, Subject, takeUntil } from 'rxjs';
 import { AuthService } from '../core/authentication/auth.service';
 import { ItemModel, User } from '../core/interfaces/interfaces';
 import { ItemsService } from '../core/services/items.service';
@@ -13,7 +13,7 @@ import { ConfirmDeleteComponent } from './confirm-delete/confirm-delete.componen
   templateUrl: './admin-page.component.html',
   styleUrls: ['./admin-page.component.scss']
 })
-export class AdminPageComponent implements OnInit {
+export class AdminPageComponent implements OnInit, OnDestroy {
 
   displayedColumns: string[] = ['firstName', 'lastName', 'email', 'uid', 'delete'];
   displayedItemColumns: string[] = ['name', 'director', 'year', 'id', 'edit', 'delete'];
@@ -22,6 +22,8 @@ export class AdminPageComponent implements OnInit {
   add: boolean = false
   toggle: boolean = false
   item!: ItemModel
+  private unsubscribe$: Subject<void> = new Subject<void>()
+
   constructor(private itemsService: ItemsService, private authService: AuthService, private toastr: ToastrService, private dialog: MatDialog) { }
   ngOnInit(): void {
     this.getAllUsers()
@@ -29,7 +31,7 @@ export class AdminPageComponent implements OnInit {
   }
 
   getAllUsers() {
-    this.authService.getUsers().pipe(map((res: any) => {
+    this.authService.getUsers().pipe(takeUntil(this.unsubscribe$),map((res: any) => {
       const tempDoc: any[] = []
       res.forEach((doc: any) => {
         tempDoc.push({ id: doc.id, ...doc.data() })
@@ -46,7 +48,7 @@ export class AdminPageComponent implements OnInit {
   }
 
   getAllItems() {
-    this.itemsService.getItems().pipe(map((res: any) => {
+    this.itemsService.getItems().pipe(takeUntil(this.unsubscribe$),map((res: any) => {
       const products = []
       for (const key in res) {
         if (res.hasOwnProperty(key)) {
@@ -59,7 +61,7 @@ export class AdminPageComponent implements OnInit {
       this.itemsSource!.filterPredicate = function (data: any, filter: string): boolean {
         return data.name.toLowerCase().includes(filter)
       }
-      this.itemsService.itemToAdd.subscribe(movie => {
+      this.itemsService.itemToAdd.pipe(takeUntil(this.unsubscribe$)).subscribe(movie => {
         const data = this.itemsSource.data;
         let check = false
         for (let i = 0; i < data.length; i++) {
@@ -80,9 +82,9 @@ export class AdminPageComponent implements OnInit {
     this.dialog.open(ConfirmDeleteComponent, {
       width: '390px',
       disableClose: true
-    }).afterClosed().subscribe(res => {
+    }).afterClosed().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       if (res) {
-        this.itemsService.delete(item).subscribe()
+        this.itemsService.delete(item).pipe(takeUntil(this.unsubscribe$)).subscribe()
         for (let user of this.dataSource.data) {
           if (user.savedMovies) {
             for (let i = 0; i < user.savedMovies.length; i++) {
@@ -112,5 +114,10 @@ export class AdminPageComponent implements OnInit {
   modalClosed(toggle: boolean) {
     this.add = false;
     this.toggle = false;
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next()
+    this.unsubscribe$.complete()
   }
 }

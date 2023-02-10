@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { map, Observable } from 'rxjs';
+import { map, Observable, Subject, takeUntil } from 'rxjs';
 import { AuthService } from '../core/authentication/auth.service';
 import { ItemModel } from '../core/interfaces/interfaces';
 import { ItemsService } from '../core/services/items.service';
@@ -10,11 +10,12 @@ import { ItemsService } from '../core/services/items.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
 
   items: ItemModel[] = []
   activeUser: any;
   savedMovies: string[] = [];
+  private unsubscribe$: Subject<void> = new Subject<void>()
 
   constructor(private authService: AuthService, private itemsService: ItemsService, private toastr: ToastrService) { }
 
@@ -23,8 +24,8 @@ export class HomeComponent implements OnInit {
   }
 
   getAvtiveUser() {
-    this.authService.getId().subscribe(user => {
-      this.authService.getUser(user!.uid).get().subscribe(user => {
+    this.authService.getId().pipe(takeUntil(this.unsubscribe$)).subscribe(user => {
+      this.authService.getUser(user!.uid).get().pipe(takeUntil(this.unsubscribe$)).subscribe(user => {
         this.activeUser = user.data()
         for (let movie of this.activeUser.savedMovies) {
           this.savedMovies.push(movie.id)
@@ -33,7 +34,7 @@ export class HomeComponent implements OnInit {
     })
   }
 
-  filteredItems: Observable<ItemModel[]> = this.itemsService.filteredItems.pipe(map(items => {
+  filteredItems: Observable<ItemModel[]> = this.itemsService.filteredItems.pipe(takeUntil(this.unsubscribe$),map(items => {
     this.items = items
     return items ?? this.items;
   }
@@ -74,5 +75,10 @@ export class HomeComponent implements OnInit {
         this.toastr.error(`${item.name} was removed from your save list!`, 'Movie Removed', { positionClass: 'toast-top-center' })
       }
     }
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next()
+    this.unsubscribe$.complete()
   }
 }

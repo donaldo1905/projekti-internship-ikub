@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, map, Observable, of, startWith, switchMap } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map, Observable, of, startWith, Subject, switchMap, takeUntil } from 'rxjs';
 import { ItemModel } from 'src/app/core/interfaces/interfaces';
 import { ItemsService } from 'src/app/core/services/items.service';
 
@@ -9,7 +9,7 @@ import { ItemsService } from 'src/app/core/services/items.service';
   templateUrl: './filter-form.component.html',
   styleUrls: ['./filter-form.component.scss']
 })
-export class FilterFormComponent implements OnInit {
+export class FilterFormComponent implements OnInit, OnDestroy {
 
   items: ItemModel[] = []
   searchForm: FormControl = new FormControl('')
@@ -19,7 +19,8 @@ export class FilterFormComponent implements OnInit {
   startTime: FormControl = new FormControl(100)
   endTime: FormControl = new FormControl(300)
   categoriesOptions: string[] = ['Action', 'Comedy', 'Drama', 'Crime', 'Fantasy', 'Adventure', 'Sci-Fi', 'Horror', 'Thriller', 'Historic', 'Epic'];
-
+  private unsubscribe$: Subject<void> = new Subject<void>()
+  
   constructor(private itemsService: ItemsService) { }
 
   ngOnInit(): void {
@@ -27,7 +28,7 @@ export class FilterFormComponent implements OnInit {
   }
 
   getAllItems() {
-    this.itemsService.getItems().pipe(map((res: any) => {
+    this.itemsService.getItems().pipe(takeUntil(this.unsubscribe$),map((res: any) => {
       const movies = []
       for (const key in res) {
         if (res.hasOwnProperty(key)) {
@@ -40,7 +41,7 @@ export class FilterFormComponent implements OnInit {
     })
   }
 
-  filteredMovies: Observable<ItemModel[]> = this.searchForm?.valueChanges.pipe(startWith(''), debounceTime(200),
+  filteredMovies: Observable<ItemModel[]> = this.searchForm?.valueChanges.pipe(takeUntil(this.unsubscribe$),startWith(''), debounceTime(200),
     switchMap(searchValue => {
       return of(this.items).
         pipe(map(movies => {
@@ -49,7 +50,7 @@ export class FilterFormComponent implements OnInit {
     }))
 
 
-  filteredByStartYear: Observable<ItemModel[]> = this.startYear?.valueChanges.pipe(distinctUntilChanged(), startWith(1970), debounceTime(200),
+  filteredByStartYear: Observable<ItemModel[]> = this.startYear?.valueChanges.pipe(takeUntil(this.unsubscribe$),distinctUntilChanged(), startWith(1970), debounceTime(200),
     switchMap(searchValue => {
       return this.filteredMovies.
         pipe(map(movies => {
@@ -60,7 +61,7 @@ export class FilterFormComponent implements OnInit {
         }))
     }))
 
-  filteredByEndYear: Observable<ItemModel[]> = this.endYear?.valueChanges.pipe(distinctUntilChanged(), startWith(2022), debounceTime(200),
+  filteredByEndYear: Observable<ItemModel[]> = this.endYear?.valueChanges.pipe(takeUntil(this.unsubscribe$),distinctUntilChanged(), startWith(2022), debounceTime(200),
     switchMap(searchValue => {
       return this.filteredByStartYear.
         pipe(map(movies => {
@@ -68,7 +69,7 @@ export class FilterFormComponent implements OnInit {
         }))
     }))
 
-  filteredByStartTime: Observable<ItemModel[]> = this.startTime?.valueChanges.pipe(distinctUntilChanged(), startWith(100), debounceTime(200),
+  filteredByStartTime: Observable<ItemModel[]> = this.startTime?.valueChanges.pipe(takeUntil(this.unsubscribe$),distinctUntilChanged(), startWith(100), debounceTime(200),
     switchMap(searchValue => {
       return this.filteredByEndYear.
         pipe(map(movies => {
@@ -76,7 +77,7 @@ export class FilterFormComponent implements OnInit {
         }))
     }))
 
-  filteredByEndTime: Observable<ItemModel[]> = this.endTime?.valueChanges.pipe(distinctUntilChanged(), startWith(300), debounceTime(200),
+  filteredByEndTime: Observable<ItemModel[]> = this.endTime?.valueChanges.pipe(takeUntil(this.unsubscribe$),distinctUntilChanged(), startWith(300), debounceTime(200),
     switchMap(searchValue => {
       return this.filteredByStartTime.
         pipe(map(movies => {
@@ -84,7 +85,7 @@ export class FilterFormComponent implements OnInit {
         }))
     }))
 
-  finalFilter: Observable<ItemModel[]> = this.categories?.valueChanges.pipe(distinctUntilChanged(), startWith(''), debounceTime(200),
+  finalFilter: Observable<ItemModel[]> = this.categories?.valueChanges.pipe(takeUntil(this.unsubscribe$),takeUntil(this.unsubscribe$),distinctUntilChanged(), startWith(''), debounceTime(200),
     switchMap(searchValue => {
       if (searchValue) {
         return this.filteredByEndTime.
@@ -103,4 +104,8 @@ export class FilterFormComponent implements OnInit {
       }))
     })
   )
+  ngOnDestroy(): void {
+    this.unsubscribe$.next()
+    this.unsubscribe$.complete()
+  }
 }

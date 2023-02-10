@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
 import { AuthService } from '../core/authentication/auth.service';
 import { ItemModel } from '../core/interfaces/interfaces';
 import { ItemsService } from '../core/services/items.service';
@@ -11,7 +12,7 @@ import { ItemsService } from '../core/services/items.service';
   templateUrl: './detailed-page.component.html',
   styleUrls: ['./detailed-page.component.scss']
 })
-export class DetailedPageComponent implements OnInit {
+export class DetailedPageComponent implements OnInit, OnDestroy {
   item: ItemModel | undefined;
   trailer!: string
   activeUser: any
@@ -30,6 +31,7 @@ export class DetailedPageComponent implements OnInit {
   ten = new FormControl(10)
   fileUrl: any;
   commentForm = new FormControl('', Validators.required)
+  private unsubscribe$: Subject<void> = new Subject<void>()
 
   constructor(private itemsService: ItemsService, private route: ActivatedRoute, private authService: AuthService, private router: Router, private sanitizer: DomSanitizer) { }
   ngOnInit(): void {
@@ -37,10 +39,10 @@ export class DetailedPageComponent implements OnInit {
   }
 
   getActiveUser() {
-    this.authService.getId().subscribe(user => {
-      this.authService.getUser(user!.uid).get().subscribe(user => {
+    this.authService.getId().pipe(takeUntil(this.unsubscribe$)).subscribe(user => {
+      this.authService.getUser(user!.uid).get().pipe(takeUntil(this.unsubscribe$)).subscribe(user => {
         this.activeUser = user.data()
-        this.itemsService.getItem(this.route.snapshot.params['id']).subscribe(item => {
+        this.itemsService.getItem(this.route.snapshot.params['id']).pipe(takeUntil(this.unsubscribe$)).subscribe(item => {
           if (item) {
             this.trailer = item.trailer.slice(0, 24) + 'embed/' + item.trailer.slice(32) + '?autoplay=1'
             this.item = item
@@ -70,7 +72,7 @@ export class DetailedPageComponent implements OnInit {
       for (let i = 0; i < this.item.rating.length; i++) {
         if (this.item.rating[i].id === this.activeUser?.uid) {
           this.item.rating[i] = { id: this.activeUser?.uid, rating: +name.value }
-          this.itemsService.rateItem(this.route.snapshot.params['id'], this.item!.rating).subscribe()
+          this.itemsService.rateItem(this.route.snapshot.params['id'], this.item!.rating).pipe(takeUntil(this.unsubscribe$)).subscribe()
           replace = true
           console.log(this.activeUser.uid)
         }
@@ -80,12 +82,12 @@ export class DetailedPageComponent implements OnInit {
 
       if (!replace) {
         this.item.rating.push({ id: this.activeUser?.uid, rating: +name.value })
-        this.itemsService.rateItem(this.route.snapshot.params['id'], this.item.rating).subscribe()
+        this.itemsService.rateItem(this.route.snapshot.params['id'], this.item.rating).pipe(takeUntil(this.unsubscribe$)).subscribe()
         this.averageRating = this.averageRating / 2 + +name.value / 2
         console.log(this.activeUser.uid)
       }
     } else {
-      this.itemsService.rateItem(this.route.snapshot.params['id'], [{ id: this.activeUser?.uid, rating: +name.value }]).subscribe()
+      this.itemsService.rateItem(this.route.snapshot.params['id'], [{ id: this.activeUser?.uid, rating: +name.value }]).pipe(takeUntil(this.unsubscribe$)).subscribe()
       this.averageRating = +name.value
       console.log(this.activeUser.uid)
     }
@@ -99,16 +101,21 @@ export class DetailedPageComponent implements OnInit {
     }
     if (this.item?.comments) {
       this.item.comments.unshift(newComment)
-      this.itemsService.addComment(this.route.snapshot.params['id'], this.item.comments).subscribe()
+      this.itemsService.addComment(this.route.snapshot.params['id'], this.item.comments).pipe(takeUntil(this.unsubscribe$)).subscribe()
     } else {
       this.item!.comments = [newComment]
-      this.itemsService.addComment(this.route.snapshot.params['id'], [newComment]).subscribe()
+      this.itemsService.addComment(this.route.snapshot.params['id'], [newComment]).pipe(takeUntil(this.unsubscribe$)).subscribe()
     }
     this.commentForm.reset()
   }
 
   deleteComment(comment: any) {
     this.item?.comments!.splice(this.item?.comments!.indexOf(comment), 1)
-    this.itemsService.addComment(this.route.snapshot.params['id'], this.item!.comments!).subscribe()
+    this.itemsService.addComment(this.route.snapshot.params['id'], this.item!.comments!).pipe(takeUntil(this.unsubscribe$)).subscribe()
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next()
+    this.unsubscribe$.complete()
   }
 }

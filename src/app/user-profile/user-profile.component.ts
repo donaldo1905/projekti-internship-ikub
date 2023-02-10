@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { Subject, takeUntil } from 'rxjs';
 import { AuthService } from '../core/authentication/auth.service';
 import { ItemModel, User } from '../core/interfaces/interfaces';
 
@@ -10,10 +11,12 @@ import { ItemModel, User } from '../core/interfaces/interfaces';
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.scss']
 })
-export class UserProfileComponent implements OnInit {
+export class UserProfileComponent implements OnInit, OnDestroy {
   activeUser?: User;
   editUser!: FormGroup
   toggleform: boolean = false
+  private unsubscribe$: Subject<void> = new Subject<void>()
+
   constructor(private authService: AuthService, private toastr: ToastrService) { }
   ngOnInit(): void {
     this.getActiveUser()
@@ -27,8 +30,8 @@ export class UserProfileComponent implements OnInit {
   }
 
   getActiveUser() {
-    this.authService.getId().subscribe(user => {
-      this.authService.getUser(user!.uid).get().subscribe(user => {
+    this.authService.getId().pipe(takeUntil(this.unsubscribe$)).subscribe(user => {
+      this.authService.getUser(user!.uid).get().pipe(takeUntil(this.unsubscribe$)).subscribe(user => {
         this.activeUser = user.data()
         this.editUser.get('name')?.setValue(user.data()?.firstName)
         this.editUser.get('photo')?.setValue(user.data()?.photo)
@@ -74,5 +77,10 @@ export class UserProfileComponent implements OnInit {
         this.editUser.get('photo')?.setValue(ctx!.canvas.toDataURL())
       }
     }
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next()
+    this.unsubscribe$.complete()
   }
 }
